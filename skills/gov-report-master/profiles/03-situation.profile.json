@@ -1,0 +1,357 @@
+{
+  "schema_version": "1.0",
+  "type_id": "03",
+  "type_name": "상황",
+  "reference_group": "상황",
+  "measured": true,
+  "binding": "soft",
+  "_binding_note": "서식(HWPX)이 첨부되면 analyze_form.py 가 binding:'hard' 프로파일을 따로 만들어 이 값을 덮는다. hard 는 기획을 앞에서 구속하고, soft 는 사후 대조만 한다.",
+  "gate_direction": "max",
+  "primary_metric": "시각 표기 밀도 (HH:MM 또는 (M.D) 출현 수)",
+  "kordoc": {
+    "preset": "보고서",
+    "options": [
+      "--no-cover",
+      "--no-toc",
+      "--no-page-numbers"
+    ]
+  },
+  "guard_overrides": {
+    "narrative_ending": "WARN",
+    "marker_min": "OFF",
+    "hierarchy_depth": "OFF"
+  },
+  "lineages": {
+    "central_2015plus": {
+      "n": 1,
+      "sources": [
+        "상황-04"
+      ],
+      "excluded_outliers": [
+        "상황-02"
+      ],
+      "density": {
+        "lines_nonempty": {
+          "median": 142,
+          "min": 142,
+          "max": 142,
+          "n": 1
+        },
+        "char_total": {
+          "median": 3525,
+          "min": 3525,
+          "max": 3525,
+          "n": 1
+        },
+        "char_median": {
+          "median": 23,
+          "min": 23,
+          "max": 23,
+          "n": 1
+        },
+        "table_rows": {
+          "median": 0,
+          "min": 0,
+          "max": 0,
+          "n": 1
+        },
+        "headings": {
+          "median": 8,
+          "min": 8,
+          "max": 8,
+          "n": 1
+        },
+        "marker_total": {
+          "median": 12,
+          "min": 12,
+          "max": 12,
+          "n": 1
+        },
+        "marker_counts": {
+          "-": {
+            "median": 4,
+            "min": 4,
+            "max": 4
+          },
+          "○": {
+            "median": 8,
+            "min": 8,
+            "max": 8
+          }
+        }
+      },
+      "layout_signature": {
+        "paren_labels": {
+          "median": 1,
+          "min": 1,
+          "max": 1,
+          "n": 1
+        },
+        "time_marks": {
+          "median": 7,
+          "min": 7,
+          "max": 7,
+          "n": 1
+        },
+        "note_star": {
+          "median": 0,
+          "min": 0,
+          "max": 0,
+          "n": 1
+        },
+        "note_ref": {
+          "median": 0,
+          "min": 0,
+          "max": 0,
+          "n": 1
+        },
+        "attachment_ratio": 0.0,
+        "end_mark_ratio": 0.0
+      },
+      "quality": {
+        "lines_over_46": {
+          "median": 4,
+          "min": 4,
+          "max": 4,
+          "n": 1
+        }
+      }
+    },
+    "blue_house_2000s": {
+      "n": 1,
+      "sources": [
+        "상황-03"
+      ],
+      "excluded_outliers": [],
+      "density": {
+        "lines_nonempty": {
+          "median": 61,
+          "min": 61,
+          "max": 61,
+          "n": 1
+        },
+        "char_total": {
+          "median": 1792,
+          "min": 1792,
+          "max": 1792,
+          "n": 1
+        },
+        "char_median": {
+          "median": 27,
+          "min": 27,
+          "max": 27,
+          "n": 1
+        },
+        "table_rows": {
+          "median": 4,
+          "min": 4,
+          "max": 4,
+          "n": 1
+        },
+        "headings": {
+          "median": 1,
+          "min": 1,
+          "max": 1,
+          "n": 1
+        },
+        "marker_total": {
+          "median": 46,
+          "min": 46,
+          "max": 46,
+          "n": 1
+        },
+        "marker_counts": {
+          "-": {
+            "median": 22,
+            "min": 22,
+            "max": 22
+          },
+          "□": {
+            "median": 7,
+            "min": 7,
+            "max": 7
+          },
+          "○": {
+            "median": 17,
+            "min": 17,
+            "max": 17
+          }
+        }
+      },
+      "layout_signature": {
+        "paren_labels": {
+          "median": 0,
+          "min": 0,
+          "max": 0,
+          "n": 1
+        },
+        "time_marks": {
+          "median": 7,
+          "min": 7,
+          "max": 7,
+          "n": 1
+        },
+        "note_star": {
+          "median": 0,
+          "min": 0,
+          "max": 0,
+          "n": 1
+        },
+        "note_ref": {
+          "median": 0,
+          "min": 0,
+          "max": 0,
+          "n": 1
+        },
+        "attachment_ratio": 0.0,
+        "end_mark_ratio": 0.0
+      },
+      "quality": {
+        "lines_over_46": {
+          "median": 6,
+          "min": 6,
+          "max": 6,
+          "n": 1
+        }
+      }
+    },
+    "local_gian": {
+      "n": 1,
+      "sources": [
+        "상황-06"
+      ],
+      "excluded_outliers": [],
+      "density": {
+        "lines_nonempty": {
+          "median": 43,
+          "min": 43,
+          "max": 43,
+          "n": 1
+        },
+        "char_total": {
+          "median": 1930,
+          "min": 1930,
+          "max": 1930,
+          "n": 1
+        },
+        "char_median": {
+          "median": 25,
+          "min": 25,
+          "max": 25,
+          "n": 1
+        },
+        "table_rows": {
+          "median": 16,
+          "min": 16,
+          "max": 16,
+          "n": 1
+        },
+        "headings": {
+          "median": 8,
+          "min": 8,
+          "max": 8,
+          "n": 1
+        },
+        "marker_total": {
+          "median": 12,
+          "min": 12,
+          "max": 12,
+          "n": 1
+        },
+        "marker_counts": {
+          "-": {
+            "median": 8,
+            "min": 8,
+            "max": 8
+          },
+          "□": {
+            "median": 3,
+            "min": 3,
+            "max": 3
+          },
+          "○": {
+            "median": 1,
+            "min": 1,
+            "max": 1
+          }
+        }
+      },
+      "layout_signature": {
+        "paren_labels": {
+          "median": 0,
+          "min": 0,
+          "max": 0,
+          "n": 1
+        },
+        "time_marks": {
+          "median": 9,
+          "min": 9,
+          "max": 9,
+          "n": 1
+        },
+        "note_star": {
+          "median": 0,
+          "min": 0,
+          "max": 0,
+          "n": 1
+        },
+        "note_ref": {
+          "median": 0,
+          "min": 0,
+          "max": 0,
+          "n": 1
+        },
+        "attachment_ratio": 0.0,
+        "end_mark_ratio": 1.0
+      },
+      "quality": {
+        "lines_over_46": {
+          "median": 5,
+          "min": 5,
+          "max": 5,
+          "n": 1
+        }
+      }
+    }
+  },
+  "default_lineage": "central_2015plus",
+  "_outlier_note": "excluded_outliers 는 부속 표(법령용어 목록·명단 등)가 본문의 몇 배로 붙어 밀도 기준을 왜곡하는 문서다. 표행 수가 그룹 중앙값의 5배를 넘고 100행 이상이면 집계에서 뺀다. 문서 자체가 나쁘다는 뜻이 아니라 '평균적 분량'의 표본이 아니라는 뜻이다.",
+  "_lineage_note": "blue_house_2000s('06~'07 청와대 비서관실)는 「◇ 머리글 + <요약> 선행」·러닝헤더 서식으로 현행 표기규정과 상충한다. 참고용으로만 두고 기본 선택 대상에서 뺀다.",
+  "metric_trust": {
+    "_comment": "이 프로파일이 PDF 레퍼런스에서 나왔다면 문단·글자 지표를 게이트로 쓰면 안 된다. PDF 조판 줄바꿈이 한 문단을 여러 줄로 쪼개 문단 수를 부풀리고 길이를 1/N 로 낮춘다(normalize.py 가 되붙이지만 완전하지 않다).",
+    "source": "pdf_corpus",
+    "trusted": [
+      "marker_counts",
+      "table_rows",
+      "headings"
+    ],
+    "untrusted": [
+      "lines_nonempty",
+      "char_total",
+      "char_median"
+    ],
+    "untrusted_reason": "PDF 조판 줄바꿈으로 문단 경계가 왜곡됨. 문단 단위 비교(Q12)는 HWPX 레퍼런스가 있을 때만 수행한다.",
+    "page_count_source": "kordoc render 의 (N페이지) — PDF 프로파일이 아니라 실제 조판에서 얻는다"
+  },
+  "density": {
+    "_note": "신속성·1쪽 압축이 우선인 유형. - 층 하한을 낮춘다. references/14-content-density.md §1 참조.",
+    "dash_per_circle_min": 0.3,
+    "dash_per_circle_target": [
+      0.3,
+      0.6
+    ],
+    "circle_median_chars": [
+      29,
+      67
+    ],
+    "dash_median_chars": [
+      30,
+      62
+    ],
+    "markers_per_page": [
+      12,
+      17
+    ],
+    "box_per_page_max": 2
+  }
+}

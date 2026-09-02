@@ -1,0 +1,6 @@
+__pycache__/
+*.pyc
+
+# eval 실행 부산물 — E6(analyze_form)·E7(build chain) 이 만든다
+skills/gov-report-master/out/
+*.__pagecount.svg

@@ -1,0 +1,58 @@
+{
+  "_comment": "골든 문서 캘리브레이션 기준점. 통과 목표가 아니라 '이보다 나빠지지 않을 것'의 기준이다. references/09-evaluation.md §9 참조.",
+  "schema_version": "1.0",
+  "golden": {
+    "file": "D:/고수의 보고법/보고서 코칭 토탈 에이전트/정책기획보고서_수정본_최우진.md",
+    "type_id": "01",
+    "profile": "profiles/01-policy-review.profile.json",
+    "note": "이 방법론으로 만든 실제 산출물. 다만 템플릿 01 을 완전히 만족하지는 않는다."
+  },
+  "baseline_counts": {
+    "MINOR": 1,
+    "WARN": 1,
+    "ADVISORY": 3
+  },
+  "baseline_metrics": {
+    "narrative_endings": 0,
+    "placeholders": 8,
+    "ai_tag_overuse_paragraphs": 0,
+    "mixed_depth_markers": 0,
+    "lines_over_46": 18,
+    "body_emoji": 0,
+    "note_star": 0,
+    "note_ref": 2,
+    "repeated_predicates": 0,
+    "bold_violations": 0,
+    "orphan_tails": 0,
+    "vague_words": 0,
+    "hard_words": 0,
+    "kordoc_raw": 12,
+    "kordoc_kept": 3,
+    "kordoc_dropped": 9,
+    "circle_count": 21,
+    "dash_count": 7,
+    "dash_per_circle": 0.33,
+    "narrative_mode": true,
+    "circle_median_chars": 55,
+    "childless_circle_rate": 0.76
+  },
+  "known_gaps": [
+    "【별첨】·【검증 요약표】 없음 — templates/01 필수 항목",
+    "{{ }} 6개인데 '📌 채워넣을 데이터' 섹션 없음",
+    "Q22 WARN — `-`:`○` 0.33 (기준 0.8). 이 문서는 ○ 중앙값 55자의 완결서술형이라 MAJOR 가 아니라 WARN 으로 낮춰 잡힌다. 기획·검토형이었다면 FAIL 이 맞다.",
+    "위계별 길이 상한 초과 18줄 — Q9 가 ○·□ 46자 / -·※·* 75자로 분기된 뒤의 값(이전 23줄)"
+  ],
+  "calibration_result": {
+    "kordoc_raw": 12,
+    "kordoc_kept": 3,
+    "kordoc_dropped": 9,
+    "our_false_positives_fixed": [
+      "Q10 이모지 — ☞(U+261E)를 이모지로 오인. ☞ 는 S5 가 권장하는 기호다",
+      "Q20 꼬리 — '---' 마크다운 수평선을 3자 꼬리로 오인",
+      "COUPLET·ITEM_LONG — '○ (민원 집중) …' 괄호 소제목을 대구로 오인 (kordoc)"
+    ],
+    "final": "CRITICAL 0 · MAJOR 0 · ERROR 0 · MINOR 1 · ADVISORY 3"
+  },
+  "regression_rule": "새 산출물은 baseline_counts 보다 나빠지면 안 되고, known_gaps 1·2 는 해소돼야 한다.",
+  "_recalibrated": "2026-09-02 · Q22~Q24(내용 밀도) 신설 및 Q9 위계별 분기 반영. references/14-content-density.md"
+}

@@ -1,0 +1,22 @@
+{
+  "name": "gov-report-master",
+  "version": "1.1.0",
+  "description": "대한민국 공무원·공공기관 실무자의 정부 보고서를 '생각정리(기획)→쓰기→편집→전달'의 고수 4단계로 작성하고, 한글(.hwpx) 파일까지 직접 산출하는 보고서 파이프라인. 박종필 「고수의 보고법」·백승권 「한번에 통과되는 기획서 보고서」·박종덕 「2025 개정 공문서 작성법」 방법론(Why1·Why2·How·What 4덩어리, 깨포, 두괄식·개조식) 기반. 내부 6종·외부 4종(정책검토·계획수립·상황·개요정리·회의참고·결과보고·보고·협의·설명·말씀) 10종 유형 체계. 첨부 서식 해부(칸 구조가 기획을 앞에서 구속) → 근거 조사(1주장 2출처) → 뼈대 승인 게이트 → 본문 → 정량 26·정성 13 검수와 반려 재수행 루프(내용 밀도 게이트 Q22~Q26 포함 — `-` 설명 층 하한과 쪽당 밀도) → kordoc HWPX 산출·구조검증·밀도 대조까지 사용자 승인 게이트 7개로 진행한다. 실제 부처 보고서 18건 실측 프로파일과 2025 개정 공문서 서식 규정을 참조한다.",
+  "author": {
+    "name": "Hani"
+  },
+  "license": "MIT",
+  "keywords": [
+    "report",
+    "korean-government",
+    "policy-report",
+    "hwpx",
+    "kordoc",
+    "executive-report",
+    "gosu-report",
+    "storytelling-report",
+    "result-report",
+    "document-quality-gate",
+    "content-density"
+  ]
+}

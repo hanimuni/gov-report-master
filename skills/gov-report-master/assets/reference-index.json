@@ -1,0 +1,164 @@
+{
+  "schema_version": "1.0",
+  "_comment": "이 플러그인이 참조하는 모든 레퍼런스 자산의 단일 인덱스. 유형(10종) → 뼈대/카드/코퍼스/프로파일을 잇는다. 원본 PDF·상용 도서는 저장소에 그대로 두고 경로만 가리킨다(복제하지 않음).",
+
+  "layers": {
+    "template": "유형별 질문세트·뼈대·깨포 — skills/gov-report-master/templates/",
+    "type_detail": "유형 상세·표준 골격 시퀀스 — skills/gov-report-master/references/05-report-types.md",
+    "sample_card": "실제 부처 보고서 18건의 목차구조·배울점·발췌 — assets/samples/ (INDEX.md + 3폴더 18카드)",
+    "corpus": "유형별 대표 1건의 본문 전문(정규화) — assets/corpus/. 카드에 없는 실제 문장·마커 밀도를 준다",
+    "profile": "유형별 밀도·레이아웃 실측 기준 — profiles/NN-*.profile.json",
+    "external": "외부 MIT 자산 — assets/external/ (출처·라이선스 동봉)"
+  },
+
+  "types": [
+    { "id": "01", "name": "정책검토", "scope": "내부",
+      "template": "templates/01-policy-review.md",
+      "sample_cards": ["assets/samples/기획보고서/sample-01.md", "assets/samples/기획보고서/sample-04.md", "assets/samples/기획보고서/sample-06.md"],
+      "corpus": "assets/corpus/대표-기획_인공지능혁신허브추진계획_과기정통부2021.md",
+      "profile": "profiles/01-policy-review.profile.json",
+      "kordoc_preset": "개조식" },
+
+    { "id": "02", "name": "계획수립", "scope": "내부",
+      "template": "templates/02-plan-establishment.md",
+      "sample_cards": ["assets/samples/기획보고서/sample-02.md", "assets/samples/기획보고서/sample-03.md", "assets/samples/기획보고서/sample-05.md"],
+      "corpus": "assets/corpus/대표-기획_인공지능혁신허브추진계획_과기정통부2021.md",
+      "profile": "profiles/02-plan-establishment.profile.json",
+      "kordoc_preset": "개조식" },
+
+    { "id": "03", "name": "상황", "scope": "내부",
+      "template": "templates/03-situation.md",
+      "sample_cards": ["assets/samples/상황보고서/sample-02.md", "assets/samples/상황보고서/sample-03.md", "assets/samples/상황보고서/sample-04.md", "assets/samples/상황보고서/sample-06.md"],
+      "corpus": "assets/corpus/대표-상황_구제역방역상황보고_국립축산과학원2018.md",
+      "profile": "profiles/03-situation.profile.json",
+      "kordoc_preset": "보고서" },
+
+    { "id": "04", "name": "개요정리(1쪽)", "scope": "내부",
+      "template": "templates/04-summary-onepager.md",
+      "sample_cards": [], "corpus": null,
+      "profile": "profiles/04-summary-onepager.profile.json",
+      "kordoc_preset": "보고서",
+      "note": "전용 레퍼런스 없음 — 프로파일은 ①에서 파생하되 상한 게이트만 적용" },
+
+    { "id": "05", "name": "회의참고", "scope": "내부",
+      "template": "templates/05-meeting-reference.md",
+      "sample_cards": [], "corpus": null,
+      "profile": "profiles/05-meeting-reference.profile.json",
+      "kordoc_preset": "보고서",
+      "note": "전용 레퍼런스 없음 — 파생값" },
+
+    { "id": "06", "name": "보고자료", "scope": "외부",
+      "template": "templates/06-external-report.md",
+      "sample_cards": [], "corpus": null,
+      "profile": "profiles/06-external-report.profile.json",
+      "kordoc_preset": "보고서",
+      "note": "전용 레퍼런스 없음 — 파생값" },
+
+    { "id": "07", "name": "협의자료", "scope": "외부",
+      "template": "templates/07-external-consultation.md",
+      "sample_cards": [], "corpus": null,
+      "profile": "profiles/07-external-consultation.profile.json",
+      "kordoc_preset": "보고서",
+      "note": "전용 레퍼런스 없음 — 파생값" },
+
+    { "id": "08", "name": "설명자료(보도)", "scope": "외부",
+      "template": "templates/08-external-explanation.md",
+      "sample_cards": [], "corpus": null,
+      "profile": "profiles/08-external-explanation.profile.json",
+      "kordoc_preset": "보도자료",
+      "note": "사례 PDF 0건. 교안 '4.보도자료_교안.pdf' 만 존재 — 원본 경로 참조" },
+
+    { "id": "09", "name": "말씀자료", "scope": "외부",
+      "template": "templates/09-external-speech.md",
+      "sample_cards": [], "corpus": null,
+      "profile": "profiles/09-external-speech.profile.json",
+      "kordoc_preset": "보고서",
+      "note": "전용 레퍼런스 없음 — 파생값. 상한 게이트만" },
+
+    { "id": "10", "name": "결과보고", "scope": "내부",
+      "template": "templates/10-result-report.md",
+      "sample_cards": ["assets/samples/결과보고서/sample-01.md", "assets/samples/결과보고서/sample-03.md", "assets/samples/결과보고서/sample-04.md", "assets/samples/결과보고서/sample-05.md", "assets/samples/결과보고서/sample-06.md"],
+      "corpus": "assets/corpus/대표-결과_법제업무평가시스템개발완료_법제처2019.md",
+      "profile": "profiles/10-result-report.profile.json",
+      "kordoc_preset": "개조식" }
+  ],
+
+  "corpus": {
+    "_comment": "유형별 대표 1건만 본문 전문을 싣는다. 선정 기준 = ① 파싱 품질(마커가 온전히 회수되는가) ② 계층 완전성(□○-※ 3~4단) ③ 계열(central_2015plus 기본값) ④ 유형 전형성. 나머지 15건은 assets/samples/ 카드로만 참조하고 원본 PDF 경로를 가리킨다.",
+    "selection_criteria_note": "결과-02(산림청 2018)는 PDF 텍스트층이 손상돼 '### ❍' 고아 줄 20여 개가 발생하여 제외. 기획-04(문체부)는 본문 대부분이 이미지(![image] 11개)라 제외. 상황-01·05는 스캔본(텍스트층 없음).",
+    "entries": [
+      { "slug": "대표-기획", "type_ids": ["01", "02"], "lineage": "central_2015plus",
+        "file": "assets/corpus/대표-기획_인공지능혁신허브추진계획_과기정통부2021.md",
+        "source_pdf": "1.기획보고서(사례5)인공지능혁신허브추진계획_소프트웨어정책관(2021).pdf",
+        "sample_card": "assets/samples/기획보고서/sample-05.md",
+        "org": "과학기술정보통신부 소프트웨어정책관", "year": 2021,
+        "stats": { "lines_nonempty": 178, "marker_counts": { "○": 35, "-": 38, "□": 18, "※": 1 }, "corpus_lines": 330 },
+        "why_selected": "괄호 소제목 (도전)·(자율)·(개방)·(협력) 4연속과 ◈ 강조박스가 온전히 회수됨. □○- 3단 계층이 균형. 로마숫자 장 헤더 + 목차 페이지 보유." },
+
+      { "slug": "대표-상황", "type_ids": ["03"], "lineage": "central_2015plus",
+        "file": "assets/corpus/대표-상황_구제역방역상황보고_국립축산과학원2018.md",
+        "source_pdf": "2.상황보고서(사례4)국내 구제역  발령에 따른 축산원 가축방역 상황보고_국립축산과학원(2018).pdf",
+        "sample_card": "assets/samples/상황보고서/sample-04.md",
+        "org": "국립축산과학원", "year": 2018,
+        "stats": { "lines_nonempty": 142, "marker_counts": { "○": 8, "-": 4 }, "corpus_lines": 288 },
+        "why_selected": "상황보고의 시간축 MECE가 그대로 보임 — (3.25)/(3.26)/(3.27) 임상증상 단계별 시각 병기. '발생 개요 → 상급기관 조치 → 우리 기관 조치' 3단 속보형 구조. 장 번호 1·2 형식.",
+        "filename_caution": "원본 PDF 파일명에 '구제역  발령' 처럼 공백 2칸이 들어 있다." },
+
+      { "slug": "대표-결과", "type_ids": ["10"], "lineage": "central_2015plus",
+        "file": "assets/corpus/대표-결과_법제업무평가시스템개발완료_법제처2019.md",
+        "source_pdf": "3.결과보고서(사례3)법제업무평가시스템 개발 완료 결과_법제처(2019).pdf",
+        "sample_card": "assets/samples/결과보고서/sample-03.md",
+        "org": "법제처", "year": 2019,
+        "stats": { "lines_nonempty": 40, "marker_counts": { "□": 3, "○": 7, "-": 13, "※": 2 }, "corpus_lines": 81 },
+        "why_selected": "□○-※ 4단이 전부 온전히 회수된 유일한 건. 리드문이 '~보고하고자 함.' 한 문장으로 규정에 정확히 부합. 40줄로 간결해 결과보고 전형." }
+    ]
+  },
+
+  "originals": {
+    "_comment": "원본은 저장소에 그대로 두고 복제하지 않는다. 필요 시 이 경로를 kordoc으로 직접 파싱한다.",
+    "case_pdfs_dir": "D:/고수의 보고법/글쓰기/인재개발원전송용",
+    "case_count": 18,
+    "case_breakdown": { "기획": 6, "상황": 6, "결과": 6 },
+    "scan_only": ["2.상황보고서(사례1)고병원성 AI 상황진단 및 향후 방역대책 추진방안_농림축산식품부(2021).pdf",
+                  "2.상황보고서(사례5)병역판정검사장 정전사고 조치사항 보고_병무청(2018).pdf"],
+    "teaching_materials": ["1.기획보고서_교안.pdf", "2.상황보고서_교안.pdf", "3.결과보고서_교안.pdf", "4.보도자료_교안.pdf"],
+    "filename_cautions": ["작은따옴표 포함: 3.결과보고서(사례1)'21년…, (사례5)'06년…", "공백 2칸 포함: 2.상황보고서(사례4)…구제역  발령…"]
+  },
+
+  "hwpx_forms": {
+    "_comment": "HWPX 서식 레퍼런스. kordoc profile 로 표 서식을 추출하는 소스. 파일은 복제하지 않고 경로만 가리킨다.",
+    "entries": [
+      { "path": "D:/고수의 보고법/보고서 코칭 토탈 에이전트/정책기획보고서_최우진_수정본.hwpx",
+        "bytes": 73673, "role": "이 방법론으로 만든 유일한 완성 산출물 — 골든 baseline 겸 서식 프로필 1순위 소스" },
+      { "path": "D:/고수의 보고법/글쓰기/글쓰기 보고서 관련 자료/8. 보고서 도구함.hwpx",
+        "bytes": 5631730, "role": "서식·도구 모음집 — 보조 서식 소스" },
+      { "path": "D:/고수의 보고법/글쓰기/신입 공무원 한장 보고서.hwpx",
+        "bytes": 61459, "role": "1쪽 보고 서식 — ④ 개요정리 프로파일 참고" },
+      { "path": "D:/고수의 보고법/글쓰기/칭찬받는 보고서 작성법.hwpx", "bytes": 114751, "role": "보조" }
+    ]
+  },
+
+  "external": {
+    "_comment": "라이선스가 허용되는 외부 자산만 출처·라이선스를 동봉해 포함한다. 상세는 assets/external/ATTRIBUTION.md.",
+    "included": [
+      { "repo": "mouseco/k-gov-skills", "license": "MIT", "dir": "assets/external/k-gov-skills" },
+      { "repo": "Kminer2053/public-doc-to-hwpx", "license": "MIT", "dir": "assets/external/public-doc-to-hwpx" }
+    ],
+    "excluded_no_license": [
+      { "repo": "jkf87/hwpx-skill", "reason": "라이선스 없음(All rights reserved) — 파일 복제 불가. 아이디어만 자체 재구현" },
+      { "repo": "Canine89/hwpxskill", "reason": "라이선스 없음 — 동일" },
+      { "repo": "Canine89/gonggong_hwpxskills", "reason": "라이선스 없음 — 동일" }
+    ]
+  },
+
+  "excluded_copyright": {
+    "_comment": "CLAUDE.md 불변식: 상용 도서의 원문을 복제하지 않는다. 프레임워크·원칙을 적용하는 데만 쓴다.",
+    "items": [
+      "글쓰기/2025 개정 공문서 작성법_박종덕.hwpx",
+      "글쓰기/실무 유형별 보고서 작성법 초단기 완성_박종덕.hwp",
+      "글쓰기/한번에 통과되는 기획서 보고서1_백승권.pdf",
+      "글쓰기/한번에 통과되는 기획서 보고서2(수정)_백승권.pdf",
+      "루트 *.jpg 165장 (서적 촬영본)"
+    ]
+  }
+}

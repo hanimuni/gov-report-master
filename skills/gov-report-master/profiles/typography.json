@@ -1,0 +1,59 @@
+{
+  "schema_version": "1.0",
+  "_source": "기획재정부·인사혁신처·농림축산식품부 업무보고 3건 실측 (references/10-typography.md)",
+  "_measured": true,
+
+  "page": {
+    "paper": "A4",
+    "orientation": "portrait",
+    "margin_mm": { "left": 20, "right": 20, "top": 10, "bottom": 10 },
+    "header_mm": 10,
+    "footer_mm": 10,
+    "page_number": "하단 중앙 - N -"
+  },
+
+  "levels": [
+    { "id": "L0", "role": "표지 제목", "marker": null, "font": "HY헤드라인M", "family": "gothic", "pt": 32, "bold": null, "line_spacing": 160, "space_before_pt": 0,  "hanging": false },
+    { "id": "L1", "role": "장",        "marker": "Ⅰ.", "font": "HY헤드라인M", "family": "gothic", "pt": 16, "bold": true,  "line_spacing": 170, "space_before_pt": 6, "hanging": false },
+    { "id": "L2", "role": "절",        "marker": "①",  "font": "HY헤드라인M", "family": "gothic", "pt": 15, "bold": true,  "line_spacing": 170, "space_before_pt": 4, "hanging": false },
+    { "id": "L3", "role": "항목",      "marker": "□",  "font": "HY헤드라인M", "family": "gothic", "pt": 15, "bold": true,  "line_spacing": 160, "space_before_pt": 3, "hanging": true },
+    { "id": "L4", "role": "본문",      "marker": "○",  "font": "함초롬바탕",  "family": "myeongjo", "pt": 15, "bold": "partial", "line_spacing": 160, "space_before_pt": 2, "hanging": true },
+    { "id": "L5", "role": "세부",      "marker": "-",  "font": "함초롬바탕",  "family": "myeongjo", "pt": 15, "bold": "partial", "line_spacing": 160, "space_before_pt": 0, "hanging": true },
+    { "id": "L6", "role": "부연",      "marker": "ㆍ", "font": "함초롬바탕",  "family": "myeongjo", "pt": 13, "bold": false, "line_spacing": 150, "space_before_pt": 0, "hanging": true },
+    { "id": "N1", "role": "각주",      "marker": "*",  "font": "맑은 고딕",   "family": "gothic", "pt": 12, "bold": false, "line_spacing": 130, "space_before_pt": 0, "hanging": true },
+    { "id": "N2", "role": "세부 각주", "marker": "**", "font": "맑은 고딕",   "family": "gothic", "pt": 9.5, "bold": false, "line_spacing": 130, "space_before_pt": 0, "hanging": true },
+    { "id": "T",  "role": "표 안",     "marker": null, "font": "함초롬바탕",  "family": "myeongjo", "pt": 12.5, "bold": "header_only", "line_spacing": 130, "space_before_pt": 0, "hanging": false }
+  ],
+
+  "char": {
+    "letter_spacing_pct": { "default": 0, "min_allowed": -5 },
+    "width_scale_pct":    { "default": 100, "min_allowed": 95 }
+  },
+
+  "emphasis": {
+    "bold_unit": "명사구",
+    "bold_ratio_body": { "min": 0.30, "max": 0.70, "observed": [0.36, 0.57, 0.66] },
+    "bold_per_line": { "min": 1, "max": 3 },
+    "forbidden_bold": ["조사", "어미", "문장 전체", "각주 줄"],
+    "color": { "required": false, "allowed": ["파랑"], "max_ratio_body": 0.10 }
+  },
+
+  "gates": {
+    "T1_level_size":      { "tolerance_pt": 1,        "severity": "MAJOR" },
+    "T2_size_inversion":  { "threshold": 0,           "severity": "CRITICAL" },
+    "T3_body_spacing":    { "target": 160, "tol": 10, "severity": "MAJOR" },
+    "T4_hanging_indent":  { "min_ratio": 0.9, "_note": "가운데 정렬 배너·캡션이 몇 개 섞이므로 100%를 요구하지 않는다", "severity": "MAJOR" },
+    "T5_font_family":     { "threshold": 0,           "severity": "MINOR" },
+    "T6_bold_ratio":      { "min": 0.30, "max": 0.70, "severity": "MINOR" },
+    "T7_size_variety":    { "max": 7,                 "severity": "MINOR" },
+    "T8_margin_table":    { "margin_mm": 20,          "severity": "MINOR" }
+  },
+
+  "kordoc_args": [
+    "--preset", "개조식", "--no-cover", "--no-toc",
+    "--font", "myeongjo", "--pt", "15", "--line-spacing", "160",
+    "--fonts", "body=함초롬바탕,heading=HY헤드라인M,ref=맑은 고딕,table=함초롬바탕",
+    "--sizes", "dae=15,cham=12",
+    "--bullet2", "○", "--h2-marker", "box"
+  ]
+}

@@ -1,0 +1,22 @@
+{
+  "_comment": "E10 회귀 검사용 고정 입력. 정성 6개는 전부 통과시키고 Q6(출처 없는 수치)만 CRITICAL 로 두어, 반려가 Phase 5 가 아니라 Phase 2.5 로 가는지 확인한다.",
+  "qualitative": {
+    "S1": { "verdict": "PASS", "evidence": "취지 글상자가 목적·건의를 먼저 낸다" },
+    "S2": { "verdict": "PASS", "evidence": "Why1 에 '25년간 교착' 과 시행 임박이 있다" },
+    "S6": { "verdict": "PASS", "evidence": "수치 뒤에 의미 서술이 붙는다" },
+    "S8": { "verdict": "PASS", "evidence": "예산·일정·주체·역할·근거 5요소 확인" },
+    "S9": { "verdict": "PASS", "evidence": "제목의 목적어가 분석 대상과 일치" },
+    "S10": { "verdict": "PASS", "evidence": "건의사항에 결정할 항목이 명시" }
+  },
+  "findings": [
+    {
+      "id": "Q6",
+      "severity": "CRITICAL",
+      "location": "Ⅱ-2 두 번째 항목",
+      "message": "출처 없는 수치 2건",
+      "fix_hint": "S번호를 붙이거나 {{ }} 로 되돌린다"
+    }
+  ],
+  "unverifiable": [],
+  "blocker": null
+}

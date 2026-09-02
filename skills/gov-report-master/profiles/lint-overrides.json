@@ -1,0 +1,83 @@
+{
+  "_comment": "kordoc lint / lint --munche 룰의 심각도를 우리 실측 관행에 맞춰 재정의한다. 골든 원고 실측 결과 kordoc 이 우리보다 엄격하거나 우리 문서 구조를 오해하는 경우가 확인됐다. 이 층을 거치지 않고 kordoc 결과를 그대로 흘리면 에이전트가 무해한 경고에 반응해 본문을 망친다.",
+  "schema_version": "1.0",
+  "severity_map": {
+    "_comment": "kordoc 룰 ID → 우리 등급. 'DROP' 은 완전히 무시.",
+    "DATE_2DIGIT_YR": {
+      "kordoc": "error",
+      "ours": "WARN",
+      "reason": "실무 실측 45건 중 7건이 '’24. 12. 10.' 약식 표기. 소제목·표에서 쓰는 관행이며 반려 사유가 아니다. 본문 서술에서는 네 자리를 권장하되 강제하지 않는다."
+    },
+    "COLON_SPACE": {
+      "kordoc": "error",
+      "ours": "CONTEXT",
+      "apply_only_outside": [
+        "signature_block"
+      ],
+      "reason": "서명·날인란('작성자 :  홍길동  (인)')은 본문이 아니다. 본문에서는 규정대로 error 로 유지한다."
+    },
+    "LEAD_ENDING": {
+      "kordoc": "warning",
+      "ours": "DROP",
+      "reason": "kordoc 이 보고 취지 글상자(□ 1줄 + ○ 3줄 = 4행)를 리드문 한 문장으로 오인한다. references/05 의 '취지 글상자 4행 이내' 구조를 kordoc 은 모른다."
+    },
+    "LEAD_LONG": {
+      "kordoc": "warning",
+      "ours": "DROP",
+      "reason": "LEAD_ENDING 과 같은 오인. 취지 글상자를 251자 단문으로 계산한다."
+    },
+    "AI_EM_DASH": {
+      "kordoc": "warning",
+      "ours": "ADVISORY",
+      "reason": "조언용. 줄표를 쉼표·괄호·가운뎃점으로 푸는 것은 맞지만 실패 조건은 아니다."
+    },
+    "AI_BOLD_OVERUSE": {
+      "kordoc": "warning",
+      "ours": "ADVISORY",
+      "reason": "한 줄 강조 3회 이상. 표 행에서는 정상일 수 있어(비교표의 권고안 강조) advisory 로 둔다. 본문 볼드론 위반은 우리 Q19 가 따로 잡는다."
+    },
+    "COUPLET": {
+      "kordoc": "warning",
+      "ours": "TYPE_DEPENDENT",
+      "reason": "대구·슬로건. ①②⑤⑥⑦⑩은 ERROR, ③④는 ERROR, ⑧은 WARN, ⑨ 말씀자료는 OFF — 축사·기념사는 대구가 관행이다. 프로파일 guard_overrides 참조."
+    },
+    "ITEM_LONG": {
+      "kordoc": "warning",
+      "ours": "WARN",
+      "reason": "항목 줄이 실측 중앙 31자를 크게 넘음. 유효한 지적이므로 그대로 둔다."
+    }
+  },
+  "masked_regions": {
+    "_comment": "이 구간 안의 모든 문체 검사는 건너뛴다. kordoc 결과 중 이 범위에 걸린 finding 은 제거한다.",
+    "table_row": "^\\s*\\|",
+    "blockquote": "^\\s*>",
+    "code_fence": "^\\s*```",
+    "citation_line": "^\\s*▸",
+    "signature_block": "(작성자\\s*[:：]|\\(인\\)|서명\\s*또는\\s*인)",
+    "purpose_box": "_note: 제목 바로 아래 blockquote 4행 이내 — blockquote 마스크로 함께 처리됨"
+  },
+  "error_channel": {
+    "_comment": "ERROR 채널로 올릴 kordoc 룰. 여기 없는 룰은 WARN 이하로 처리한다. 편람 13룰 원전만 ERROR.",
+    "rules": [
+      "DATE_FORMAT",
+      "TIME_FORMAT",
+      "AMOUNT_FORMAT",
+      "ATTACH_FORMAT",
+      "END_MARK",
+      "BRACKET_LAW",
+      "COLON_SPACE",
+      "SPACING_ORG"
+    ]
+  },
+  "rule_line_exclusions": {
+    "_comment": "특정 kordoc 룰만 해제할 줄 패턴. 마스킹(구간 전체 제외)과 달리 룰 단위로 좁게 푼다.",
+    "COUPLET": {
+      "pattern": "^\\s*[□○\\-·]\\s*\\([^)]{2,14}\\)",
+      "reason": "'○ (민원 집중) …' 같은 괄호 소제목은 실측 항목의 12%를 차지하는 관행이다. kordoc 이 이를 대구(對句)로 오인한다."
+    },
+    "ITEM_LONG": {
+      "pattern": "^\\s*[□○\\-·]\\s*\\([^)]{2,14}\\)",
+      "reason": "괄호 소제목이 붙으면 라벨 길이만큼 항목이 길어진다. 라벨을 뺀 본문 길이는 우리 Q9 가 따로 잰다."
+    }
+  }
+}

@@ -1,0 +1,286 @@
+{
+  "_comment": "기계로 판정 가능한 회귀 검사. 각 case 는 cmd 를 그대로 돌려 exit 와 assert 를 확인한다. 사람의 판단이 필요한 항목은 여기 넣지 않는다 — 그건 report-auditor 소관이다.",
+  "schema_version": "1.0",
+  "env": {
+    "cwd": "skills/gov-report-master",
+    "vars": {
+      "PYTHONUTF8": "1",
+      "PYTHONIOENCODING": "utf-8"
+    },
+    "note": "경로는 항상 Windows 형식으로 준다. POSIX 절대경로(/c/... , /d/...)는 Python 이 읽지 못한다 — 실측 확인된 함정."
+  },
+  "cases": [
+    {
+      "id": "E1-normalize-markers",
+      "why": "PDF 파싱에서 ○(U+25CB) 가 0회, 한글자모 ᄋ(U+110B) 이 7회로 나온다. 정규화 없이 뽑은 숫자를 프로파일에 넣으면 모든 후속 게이트가 잘못된 기준으로 작동한다.",
+      "cmd": "python scripts/normalize.py \"D:/고수의 보고법/글쓰기/인재개발원전송용/3.결과보고서(사례3)법제업무평가시스템 개발 완료 결과_법제처(2019).pdf\" --json-only",
+      "exit": 0,
+      "assert": [
+        {
+          "path": "after.marker_counts.○",
+          "op": ">=",
+          "value": 5
+        },
+        {
+          "path": "after.marker_counts.ᄋ",
+          "op": "absent_or",
+          "value": 0
+        },
+        {
+          "path": "operations.headings_demoted",
+          "op": ">=",
+          "value": 1
+        },
+        {
+          "path": "operations.paragraphs_rejoined",
+          "op": ">=",
+          "value": 1
+        }
+      ]
+    },
+    {
+      "id": "E2-draft-guard-golden-baseline",
+      "why": "골든 문서는 통과 목표가 아니라 캘리브레이션 표본이다. baseline 보다 나빠지지 않는 것이 기준이다.",
+      "cmd": "python scripts/draft_guard.py \"D:/고수의 보고법/보고서 코칭 토탈 에이전트/정책기획보고서_수정본_최우진.md\" --profile profiles/01-policy-review.profile.json --json-only",
+      "exit": 2,
+      "assert": [
+        {
+          "path": "counts.CRITICAL",
+          "op": "absent_or",
+          "value": 0
+        },
+        {
+          "path": "counts.MAJOR",
+          "op": "absent_or",
+          "value": 0
+        },
+        {
+          "path": "counts.MINOR",
+          "op": "<=",
+          "value": 1
+        }
+      ]
+    },
+    {
+      "id": "E3-draft-guard-final-blocks-placeholders",
+      "why": "제출용 B 에 {{ }} 가 남아 있으면 CRITICAL 이다. 이게 통과하면 플레이스홀더가 든 문서가 결재에 올라간다.",
+      "cmd": "python scripts/draft_guard.py \"D:/고수의 보고법/보고서 코칭 토탈 에이전트/정책기획보고서_수정본_최우진.md\" --profile profiles/01-policy-review.profile.json --final --json-only",
+      "exit": 1,
+      "assert": [
+        {
+          "path": "verdict",
+          "op": "==",
+          "value": "FAIL"
+        },
+        {
+          "path": "counts.CRITICAL",
+          "op": ">=",
+          "value": 1
+        }
+      ]
+    },
+    {
+      "id": "E4-lint-overrides-applied",
+      "why": "kordoc 표기법 12건 중 DATE_2DIGIT_YR·COLON_SPACE·LEAD_* 는 우리 실측 관행상 오탐이다. overrides 를 거쳐 실질 error 가 줄어드는지가 룰 정확도 지표다.",
+      "cmd": "python scripts/draft_guard.py \"D:/고수의 보고법/보고서 코칭 토탈 에이전트/정책기획보고서_수정본_최우진.md\" --profile profiles/01-policy-review.profile.json --json-only",
+      "assert": [
+        {
+          "path": "metrics.kordoc_raw",
+          "op": ">=",
+          "value": 10
+        },
+        {
+          "path": "metrics.kordoc_dropped",
+          "op": ">=",
+          "value": 6
+        },
+        {
+          "path": "metrics.kordoc_kept",
+          "op": "<=",
+          "value": 4
+        }
+      ]
+    },
+    {
+      "id": "E5-to-kordoc-md-no-double-markers",
+      "why": "'## □-1 …' + 보고서 preset 기본 --h2-marker box 는 '□ □-1' 이중 마커를 만든다. 골든 원고에서 실제로 3건 발생했다.",
+      "cmd": "python scripts/to_kordoc_md.py \"D:/고수의 보고법/보고서 코칭 토탈 에이전트/정책기획보고서_수정본_최우진.md\" --check --json-only",
+      "exit": 2,
+      "assert": [
+        {
+          "path": "counts.heading_boxnum",
+          "op": ">=",
+          "value": 3
+        },
+        {
+          "path": "verdict",
+          "op": "==",
+          "value": "NEEDS_CONVERSION"
+        }
+      ]
+    },
+    {
+      "id": "E6-analyze-form-constraints",
+      "why": "kordoc profile 은 표 서식만 준다. 간트 행 수 같은 의미론적 칸 구조는 analyze_form.py 만 낸다. 제약 문장이 비면 Phase 0.5 가 무의미해진다.",
+      "cmd": "python scripts/analyze_form.py \"D:/고수의 보고법/보고서 코칭 토탈 에이전트/정책기획보고서_최우진_수정본.hwpx\" --json-only",
+      "exit": 0,
+      "assert": [
+        {
+          "path": "constraints",
+          "op": "len>=",
+          "value": 2
+        },
+        {
+          "path": "layout_signature.purpose_box.max_lines",
+          "op": ">=",
+          "value": 2
+        },
+        {
+          "path": "layout_signature.attachment.count",
+          "op": ">=",
+          "value": 1
+        },
+        {
+          "path": "slots.gantt_rows",
+          "op": ">=",
+          "value": 1
+        }
+      ]
+    },
+    {
+      "id": "E7-build-chain-pagefit",
+      "why": "개조식 preset 은 표지·목차로 8쪽이 된다. 목표를 넘으면 본문을 줄이기 전에 --no-cover --no-toc 를 먼저 시도해야 한다.",
+      "cmd": "python scripts/build_report.py \"D:/고수의 보고법/보고서 코칭 토탈 에이전트/정책기획보고서_수정본_최우진.md\" --type 01 -o out/eval.hwpx --workdir out/.work --org 행정안전부 --approval 담당,팀장,과장 --target-pages 5-7 --skip-draft-guard --json-only",
+      "assert": [
+        {
+          "path": "steps[?step=='kordoc validate'].ok",
+          "op": "==",
+          "value": true
+        },
+        {
+          "path": "rebuilt_without_cover",
+          "op": "==",
+          "value": true
+        },
+        {
+          "path": "pages",
+          "op": "<=",
+          "value": 7
+        }
+      ]
+    },
+    {
+      "id": "E8-density-catches-missing-attachment",
+      "why": "붙임이 없으면 밀도가 맞아도 결재 올릴 문서가 아니다. 골든의 known-gap 1 을 이 게이트가 잡아야 한다.",
+      "cmd": "python scripts/density_guard.py out/eval.hwpx --profile profiles/01-policy-review.profile.json --json-only",
+      "exit": 1,
+      "assert": [
+        {
+          "path": "findings[?id=='Q16'].severity",
+          "op": "contains",
+          "value": "MAJOR"
+        }
+      ]
+    },
+    {
+      "id": "E9-evaluate-requires-auditor",
+      "why": "확인하지 않은 것은 통과가 아니다. auditor 판정 없이 필수 정성(S1·S2·S10)이 비면 조용히 PASS 하면 안 된다.",
+      "cmd": "python scripts/evaluate.py --draft \"D:/고수의 보고법/보고서 코칭 토탈 에이전트/정책기획보고서_수정본_최우진.md\" --profile profiles/01-policy-review.profile.json --json-only",
+      "exit": 1,
+      "assert": [
+        {
+          "path": "verdict",
+          "op": "==",
+          "value": "FAIL"
+        },
+        {
+          "path": "required_ok",
+          "op": "==",
+          "value": false
+        },
+        {
+          "path": "retry_plan[0].phase",
+          "op": "==",
+          "value": "Phase 6"
+        },
+        {
+          "path": "qualitative.S3.verdict",
+          "op": "==",
+          "value": "PASS"
+        },
+        {
+          "path": "qualitative.S4.verdict",
+          "op": "==",
+          "value": "PASS"
+        },
+        {
+          "path": "qualitative.S5.verdict",
+          "op": "==",
+          "value": "PASS"
+        }
+      ]
+    },
+    {
+      "id": "E10-retry-mapping-sources",
+      "why": "출처 없는 수치는 Phase 5 가 아니라 Phase 2.5(재조사)로 돌아가야 한다. 역매핑이 틀리면 엉뚱한 단계를 다시 돈다.",
+      "cmd": "python scripts/evaluate.py --draft \"D:/고수의 보고법/보고서 코칭 토탈 에이전트/정책기획보고서_수정본_최우진.md\" --profile profiles/01-policy-review.profile.json --auditor evals/fixtures/auditor-q6-fail.json --json-only",
+      "exit": 1,
+      "assert": [
+        {
+          "path": "retry_plan[0].phase",
+          "op": "==",
+          "value": "Phase 2.5"
+        },
+        {
+          "path": "qual_pass",
+          "op": ">=",
+          "value": 9
+        }
+      ]
+    },
+    {
+      "id": "E11-gate-direction-onepager",
+      "why": "④ 개요정리·⑨ 말씀자료는 하한이 아니라 상한이다. min 으로 잡히면 에이전트가 1쪽 보고를 부풀린다.",
+      "cmd": "python -c \"import json,io;print(json.dumps({k:json.load(io.open('profiles/%s.profile.json'%k,encoding='utf-8'))['gate_direction'] for k in ['04-summary-onepager','09-external-speech','03-situation']},ensure_ascii=False))\"",
+      "exit": 0,
+      "assert": [
+        {
+          "path": "04-summary-onepager",
+          "op": "==",
+          "value": "max"
+        },
+        {
+          "path": "09-external-speech",
+          "op": "==",
+          "value": "max"
+        },
+        {
+          "path": "03-situation",
+          "op": "==",
+          "value": "max"
+        }
+      ]
+    },
+    {
+      "id": "E12-ten-types-intact",
+      "why": "유형 체계는 10종이다. 구 4대·9종·6종 분류는 폐기됐고 되살리지 않는다. 파일 수가 어긋나면 매핑표가 깨진 것이다.",
+      "cmd": "python -c \"import glob;print(len(glob.glob('templates/*.md')),len(glob.glob('profiles/[0-1]*.profile.json')))\"",
+      "exit": 0,
+      "assert": [
+        {
+          "path": "stdout",
+          "op": "==",
+          "value": "10 10"
+        }
+      ]
+    }
+  ],
+  "runner_note": "evals/run_evals.py 가 cmd 를 그대로 돌려 exit 와 stdout 을 대조한다. 사용법: python evals/run_evals.py <skills/gov-report-master 절대경로> [케이스ID 일부]. path 표기는 JSON 경로이며 [?key=='v'] 는 배열 필터, name[0] 은 인덱스, stdout 은 표준출력 원문이다.",
+  "cleanup": "E7·E8 은 out/ 아래에만 쓴다(out/eval.hwpx · out/.work). 검사 후 out/ 를 지우면 흔적이 남지 않는다. --workdir 를 주지 않으면 build_report 는 원고 옆에 .gov-report/ 를 만든다 — 사용자 폴더를 오염시키지 않으려면 항상 지정한다.",
+  "last_verified": {
+    "date": "2026-09-03",
+    "result": "12/12 통과",
+    "env": "Windows 11 · Python 3.11 · Node v24 · kordoc 4.12.0",
+    "note": "Q25(- 길이 밴드)·Q26(쪽당 밀도) 추가 후 회귀 없음"
+  }
+}

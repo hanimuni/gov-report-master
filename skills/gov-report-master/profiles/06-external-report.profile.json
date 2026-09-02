@@ -1,0 +1,52 @@
+{
+  "schema_version": "1.0",
+  "type_id": "06",
+  "type_name": "보고자료",
+  "reference_group": null,
+  "measured": false,
+  "binding": "soft",
+  "_binding_note": "서식(HWPX)이 첨부되면 analyze_form.py 가 binding:'hard' 프로파일을 따로 만들어 이 값을 덮는다. hard 는 기획을 앞에서 구속하고, soft 는 사후 대조만 한다.",
+  "gate_direction": "min",
+  "primary_metric": "차별 키워드 라벨 수 + 문단 5줄 이내",
+  "kordoc": {
+    "preset": "보고서",
+    "options": [
+      "--no-cover",
+      "--no-toc"
+    ]
+  },
+  "guard_overrides": {
+    "hierarchy_depth": "MAJOR"
+  },
+  "derived_from": "01",
+  "_derived_note": "이 유형에는 전용 레퍼런스가 없다. 01 프로파일에서 파생한 참고값이며 실측치가 아니다. 게이트는 방향(min)만 적용하고 절대값으로 반려하지 않는다.",
+  "metric_trust": {
+    "_comment": "파생 프로파일 — 절대값 게이트 없음. 방향만 적용.",
+    "source": "derived",
+    "trusted": [],
+    "untrusted": [
+      "*"
+    ]
+  },
+  "density": {
+    "_note": "내용 밀도 하한. references/14-content-density.md 가 정본. 실측 풀드 -:○ = 0.88 (0.47~1.55).",
+    "dash_per_circle_min": 0.8,
+    "dash_per_circle_target": [
+      0.8,
+      1.2
+    ],
+    "circle_median_chars": [
+      29,
+      67
+    ],
+    "dash_median_chars": [
+      30,
+      62
+    ],
+    "markers_per_page": [
+      12,
+      17
+    ],
+    "box_per_page_max": 2
+  }
+}

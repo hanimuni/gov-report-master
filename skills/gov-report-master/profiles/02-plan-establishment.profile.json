@@ -1,0 +1,288 @@
+{
+  "schema_version": "1.0",
+  "type_id": "02",
+  "type_name": "계획수립",
+  "reference_group": "기획",
+  "measured": true,
+  "binding": "soft",
+  "_binding_note": "서식(HWPX)이 첨부되면 analyze_form.py 가 binding:'hard' 프로파일을 따로 만들어 이 값을 덮는다. hard 는 기획을 앞에서 구속하고, soft 는 사후 대조만 한다.",
+  "gate_direction": "min",
+  "primary_metric": "기본방향(Why) 블록이 맨 앞에 있는가",
+  "kordoc": {
+    "preset": "개조식",
+    "options": [
+      "--org",
+      "--approval"
+    ]
+  },
+  "guard_overrides": {
+    "hierarchy_depth": "MAJOR"
+  },
+  "lineages": {
+    "central_2015plus": {
+      "n": 5,
+      "sources": [
+        "기획-01",
+        "기획-02",
+        "기획-03",
+        "기획-04",
+        "기획-05"
+      ],
+      "excluded_outliers": [],
+      "density": {
+        "lines_nonempty": {
+          "median": 330,
+          "min": 178,
+          "max": 498,
+          "n": 5
+        },
+        "char_total": {
+          "median": 11893,
+          "min": 9378,
+          "max": 37112,
+          "n": 5
+        },
+        "char_median": {
+          "median": 23,
+          "min": 23,
+          "max": 36,
+          "n": 5
+        },
+        "table_rows": {
+          "median": 21,
+          "min": 5,
+          "max": 50,
+          "n": 5
+        },
+        "headings": {
+          "median": 15,
+          "min": 9,
+          "max": 123,
+          "n": 5
+        },
+        "marker_total": {
+          "median": 34,
+          "min": 9,
+          "max": 92,
+          "n": 5
+        },
+        "marker_counts": {
+          "-": {
+            "median": 13,
+            "min": 1,
+            "max": 38
+          },
+          "·": {
+            "median": 0,
+            "min": 0,
+            "max": 7
+          },
+          "※": {
+            "median": 0,
+            "min": 0,
+            "max": 1
+          },
+          "□": {
+            "median": 14,
+            "min": 0,
+            "max": 22
+          },
+          "▸": {
+            "median": 0,
+            "min": 0,
+            "max": 3
+          },
+          "○": {
+            "median": 28,
+            "min": 0,
+            "max": 35
+          }
+        }
+      },
+      "layout_signature": {
+        "paren_labels": {
+          "median": 3,
+          "min": 0,
+          "max": 22,
+          "n": 5
+        },
+        "time_marks": {
+          "median": 0,
+          "min": 0,
+          "max": 50,
+          "n": 5
+        },
+        "note_star": {
+          "median": 0,
+          "min": 0,
+          "max": 0,
+          "n": 5
+        },
+        "note_ref": {
+          "median": 0,
+          "min": 0,
+          "max": 1,
+          "n": 5
+        },
+        "attachment_ratio": 0.2,
+        "end_mark_ratio": 0.0
+      },
+      "quality": {
+        "lines_over_46": {
+          "median": 31,
+          "min": 28,
+          "max": 85,
+          "n": 5
+        }
+      }
+    },
+    "blue_house_2000s": {
+      "n": 1,
+      "sources": [
+        "기획-06"
+      ],
+      "excluded_outliers": [],
+      "density": {
+        "lines_nonempty": {
+          "median": 262,
+          "min": 262,
+          "max": 262,
+          "n": 1
+        },
+        "char_total": {
+          "median": 25939,
+          "min": 25939,
+          "max": 25939,
+          "n": 1
+        },
+        "char_median": {
+          "median": 37,
+          "min": 37,
+          "max": 37,
+          "n": 1
+        },
+        "table_rows": {
+          "median": 25,
+          "min": 25,
+          "max": 25,
+          "n": 1
+        },
+        "headings": {
+          "median": 80,
+          "min": 80,
+          "max": 80,
+          "n": 1
+        },
+        "marker_total": {
+          "median": 91,
+          "min": 91,
+          "max": 91,
+          "n": 1
+        },
+        "marker_counts": {
+          "-": {
+            "median": 58,
+            "min": 58,
+            "max": 58
+          },
+          "·": {
+            "median": 1,
+            "min": 1,
+            "max": 1
+          },
+          "※": {
+            "median": 5,
+            "min": 5,
+            "max": 5
+          },
+          "□": {
+            "median": 7,
+            "min": 7,
+            "max": 7
+          },
+          "○": {
+            "median": 20,
+            "min": 20,
+            "max": 20
+          }
+        }
+      },
+      "layout_signature": {
+        "paren_labels": {
+          "median": 0,
+          "min": 0,
+          "max": 0,
+          "n": 1
+        },
+        "time_marks": {
+          "median": 90,
+          "min": 90,
+          "max": 90,
+          "n": 1
+        },
+        "note_star": {
+          "median": 0,
+          "min": 0,
+          "max": 0,
+          "n": 1
+        },
+        "note_ref": {
+          "median": 5,
+          "min": 5,
+          "max": 5,
+          "n": 1
+        },
+        "attachment_ratio": 0.0,
+        "end_mark_ratio": 0.0
+      },
+      "quality": {
+        "lines_over_46": {
+          "median": 79,
+          "min": 79,
+          "max": 79,
+          "n": 1
+        }
+      }
+    }
+  },
+  "default_lineage": "central_2015plus",
+  "_outlier_note": "excluded_outliers 는 부속 표(법령용어 목록·명단 등)가 본문의 몇 배로 붙어 밀도 기준을 왜곡하는 문서다. 표행 수가 그룹 중앙값의 5배를 넘고 100행 이상이면 집계에서 뺀다. 문서 자체가 나쁘다는 뜻이 아니라 '평균적 분량'의 표본이 아니라는 뜻이다.",
+  "_lineage_note": "blue_house_2000s('06~'07 청와대 비서관실)는 「◇ 머리글 + <요약> 선행」·러닝헤더 서식으로 현행 표기규정과 상충한다. 참고용으로만 두고 기본 선택 대상에서 뺀다.",
+  "metric_trust": {
+    "_comment": "이 프로파일이 PDF 레퍼런스에서 나왔다면 문단·글자 지표를 게이트로 쓰면 안 된다. PDF 조판 줄바꿈이 한 문단을 여러 줄로 쪼개 문단 수를 부풀리고 길이를 1/N 로 낮춘다(normalize.py 가 되붙이지만 완전하지 않다).",
+    "source": "pdf_corpus",
+    "trusted": [
+      "marker_counts",
+      "table_rows",
+      "headings"
+    ],
+    "untrusted": [
+      "lines_nonempty",
+      "char_total",
+      "char_median"
+    ],
+    "untrusted_reason": "PDF 조판 줄바꿈으로 문단 경계가 왜곡됨. 문단 단위 비교(Q12)는 HWPX 레퍼런스가 있을 때만 수행한다.",
+    "page_count_source": "kordoc render 의 (N페이지) — PDF 프로파일이 아니라 실제 조판에서 얻는다"
+  },
+  "density": {
+    "_note": "내용 밀도 하한. references/14-content-density.md 가 정본. 실측 풀드 -:○ = 0.88 (0.47~1.55).",
+    "dash_per_circle_min": 0.8,
+    "dash_per_circle_target": [
+      1.0,
+      1.55
+    ],
+    "circle_median_chars": [
+      29,
+      67
+    ],
+    "dash_median_chars": [
+      30,
+      62
+    ],
+    "markers_per_page": [
+      12,
+      17
+    ],
+    "box_per_page_max": 2
+  }
+}

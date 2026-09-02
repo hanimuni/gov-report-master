@@ -1,0 +1,273 @@
+{
+  "schema_version": "1.0",
+  "type_id": "10",
+  "type_name": "결과보고",
+  "reference_group": "결과",
+  "measured": true,
+  "binding": "soft",
+  "_binding_note": "서식(HWPX)이 첨부되면 analyze_form.py 가 binding:'hard' 프로파일을 따로 만들어 이 값을 덮는다. hard 는 기획을 앞에서 구속하고, soft 는 사후 대조만 한다.",
+  "gate_direction": "min",
+  "primary_metric": "[지표|목표|실적|달성률] 표 존재",
+  "kordoc": {
+    "preset": "개조식",
+    "options": [
+      "--org",
+      "--approval"
+    ]
+  },
+  "guard_overrides": {
+    "hierarchy_depth": "MAJOR"
+  },
+  "lineages": {
+    "central_2015plus": {
+      "n": 4,
+      "sources": [
+        "결과-01",
+        "결과-02",
+        "결과-03",
+        "결과-04"
+      ],
+      "excluded_outliers": [],
+      "density": {
+        "lines_nonempty": {
+          "median": 172,
+          "min": 40,
+          "max": 301,
+          "n": 4
+        },
+        "char_total": {
+          "median": 6930,
+          "min": 1191,
+          "max": 10073,
+          "n": 4
+        },
+        "char_median": {
+          "median": 23,
+          "min": 23,
+          "max": 32,
+          "n": 4
+        },
+        "table_rows": {
+          "median": 25,
+          "min": 3,
+          "max": 42,
+          "n": 4
+        },
+        "headings": {
+          "median": 7,
+          "min": 1,
+          "max": 36,
+          "n": 4
+        },
+        "marker_total": {
+          "median": 16,
+          "min": 7,
+          "max": 25,
+          "n": 4
+        },
+        "marker_counts": {
+          "-": {
+            "median": 7,
+            "min": 0,
+            "max": 13
+          },
+          "※": {
+            "median": 0,
+            "min": 0,
+            "max": 2
+          },
+          "□": {
+            "median": 6,
+            "min": 3,
+            "max": 7
+          },
+          "○": {
+            "median": 2,
+            "min": 0,
+            "max": 7
+          }
+        }
+      },
+      "layout_signature": {
+        "paren_labels": {
+          "median": 0,
+          "min": 0,
+          "max": 9,
+          "n": 4
+        },
+        "time_marks": {
+          "median": 0,
+          "min": 0,
+          "max": 0,
+          "n": 4
+        },
+        "note_star": {
+          "median": 0,
+          "min": 0,
+          "max": 0,
+          "n": 4
+        },
+        "note_ref": {
+          "median": 0,
+          "min": 0,
+          "max": 2,
+          "n": 4
+        },
+        "attachment_ratio": 0.25,
+        "end_mark_ratio": 0.0
+      },
+      "quality": {
+        "lines_over_46": {
+          "median": 15,
+          "min": 4,
+          "max": 37,
+          "n": 4
+        }
+      }
+    },
+    "blue_house_2000s": {
+      "n": 2,
+      "sources": [
+        "결과-05",
+        "결과-06"
+      ],
+      "excluded_outliers": [],
+      "density": {
+        "lines_nonempty": {
+          "median": 79,
+          "min": 38,
+          "max": 121,
+          "n": 2
+        },
+        "char_total": {
+          "median": 6873,
+          "min": 3337,
+          "max": 10409,
+          "n": 2
+        },
+        "char_median": {
+          "median": 40,
+          "min": 36,
+          "max": 44,
+          "n": 2
+        },
+        "table_rows": {
+          "median": 17,
+          "min": 6,
+          "max": 29,
+          "n": 2
+        },
+        "headings": {
+          "median": 17,
+          "min": 0,
+          "max": 34,
+          "n": 2
+        },
+        "marker_total": {
+          "median": 17,
+          "min": 17,
+          "max": 18,
+          "n": 2
+        },
+        "marker_counts": {
+          "-": {
+            "median": 7,
+            "min": 5,
+            "max": 9
+          },
+          "⇒": {
+            "median": 0,
+            "min": 0,
+            "max": 1
+          },
+          "□": {
+            "median": 3,
+            "min": 3,
+            "max": 3
+          },
+          "○": {
+            "median": 7,
+            "min": 6,
+            "max": 8
+          }
+        }
+      },
+      "layout_signature": {
+        "paren_labels": {
+          "median": 0,
+          "min": 0,
+          "max": 0,
+          "n": 2
+        },
+        "time_marks": {
+          "median": 19,
+          "min": 6,
+          "max": 33,
+          "n": 2
+        },
+        "note_star": {
+          "median": 0,
+          "min": 0,
+          "max": 0,
+          "n": 2
+        },
+        "note_ref": {
+          "median": 0,
+          "min": 0,
+          "max": 0,
+          "n": 2
+        },
+        "attachment_ratio": 0.0,
+        "end_mark_ratio": 0.0
+      },
+      "quality": {
+        "lines_over_46": {
+          "median": 33,
+          "min": 14,
+          "max": 52,
+          "n": 2
+        }
+      }
+    }
+  },
+  "default_lineage": "central_2015plus",
+  "_outlier_note": "excluded_outliers 는 부속 표(법령용어 목록·명단 등)가 본문의 몇 배로 붙어 밀도 기준을 왜곡하는 문서다. 표행 수가 그룹 중앙값의 5배를 넘고 100행 이상이면 집계에서 뺀다. 문서 자체가 나쁘다는 뜻이 아니라 '평균적 분량'의 표본이 아니라는 뜻이다.",
+  "_lineage_note": "blue_house_2000s('06~'07 청와대 비서관실)는 「◇ 머리글 + <요약> 선행」·러닝헤더 서식으로 현행 표기규정과 상충한다. 참고용으로만 두고 기본 선택 대상에서 뺀다.",
+  "metric_trust": {
+    "_comment": "이 프로파일이 PDF 레퍼런스에서 나왔다면 문단·글자 지표를 게이트로 쓰면 안 된다. PDF 조판 줄바꿈이 한 문단을 여러 줄로 쪼개 문단 수를 부풀리고 길이를 1/N 로 낮춘다(normalize.py 가 되붙이지만 완전하지 않다).",
+    "source": "pdf_corpus",
+    "trusted": [
+      "marker_counts",
+      "table_rows",
+      "headings"
+    ],
+    "untrusted": [
+      "lines_nonempty",
+      "char_total",
+      "char_median"
+    ],
+    "untrusted_reason": "PDF 조판 줄바꿈으로 문단 경계가 왜곡됨. 문단 단위 비교(Q12)는 HWPX 레퍼런스가 있을 때만 수행한다.",
+    "page_count_source": "kordoc render 의 (N페이지) — PDF 프로파일이 아니라 실제 조판에서 얻는다"
+  },
+  "density": {
+    "_note": "내용 밀도 하한. references/14-content-density.md 가 정본. 실측 풀드 -:○ = 0.88 (0.47~1.55).",
+    "dash_per_circle_min": 0.8,
+    "dash_per_circle_target": [
+      1.0,
+      1.86
+    ],
+    "circle_median_chars": [
+      29,
+      67
+    ],
+    "dash_median_chars": [
+      30,
+      62
+    ],
+    "markers_per_page": [
+      12,
+      17
+    ],
+    "box_per_page_max": 2
+  }
+}

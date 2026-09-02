@@ -1,0 +1,58 @@
+{
+  "schema_version": "1.0",
+  "type_id": "09",
+  "type_name": "말씀자료",
+  "reference_group": null,
+  "measured": false,
+  "binding": "soft",
+  "_binding_note": "서식(HWPX)이 첨부되면 analyze_form.py 가 binding:'hard' 프로파일을 따로 만들어 이 값을 덮는다. hard 는 기획을 앞에서 구속하고, soft 는 사후 대조만 한다.",
+  "gate_direction": "max",
+  "primary_metric": "키워드 3개 초과 금지 + 세부 나열 0",
+  "kordoc": {
+    "preset": "보고서",
+    "options": [
+      "--no-cover",
+      "--no-toc",
+      "--no-page-numbers"
+    ]
+  },
+  "guard_overrides": {
+    "narrative_ending": "OFF",
+    "couplet": "OFF",
+    "question_mark": "OFF",
+    "line_46chars": "OFF",
+    "marker_min": "OFF",
+    "hierarchy_depth": "OFF"
+  },
+  "derived_from": "03",
+  "_derived_note": "이 유형에는 전용 레퍼런스가 없다. 03 프로파일에서 파생한 참고값이며 실측치가 아니다. 게이트는 방향(max)만 적용하고 절대값으로 반려하지 않는다.",
+  "metric_trust": {
+    "_comment": "파생 프로파일 — 절대값 게이트 없음. 방향만 적용.",
+    "source": "derived",
+    "trusted": [],
+    "untrusted": [
+      "*"
+    ]
+  },
+  "density": {
+    "_note": "신속성·1쪽 압축이 우선인 유형. - 층 하한을 낮춘다. references/14-content-density.md §1 참조.",
+    "dash_per_circle_min": 0.0,
+    "dash_per_circle_target": [
+      0.0,
+      0.3
+    ],
+    "circle_median_chars": [
+      29,
+      67
+    ],
+    "dash_median_chars": [
+      30,
+      62
+    ],
+    "markers_per_page": [
+      12,
+      17
+    ],
+    "box_per_page_max": 2
+  }
+}
