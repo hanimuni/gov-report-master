@@ -1,0 +1,18 @@
+{
+  "name": "gov-report-master",
+  "description": "정부 보고서 작성 파이프라인 마켓플레이스",
+  "owner": {
+    "name": "Hani"
+  },
+  "plugins": [
+    {
+      "name": "gov-report-master",
+      "source": "./",
+      "description": "대한민국 공공기관 실무자의 정부 보고서를 생각정리→글쓰기→편집→전달 4단계로 작성하고 한글(.hwpx)까지 산출하는 파이프라인. 10종 유형 체계·사용자 승인 게이트 7개·정량 26/정성 13 검수(내용 밀도 게이트 Q22~Q26 포함)·kordoc HWPX 출력.",
+      "version": "1.1.0",
+      "author": {
+        "name": "Hani"
+      }
+    }
+  ]
+}
