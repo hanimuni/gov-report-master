@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 500" width="1200" height="500" role="img" aria-labelledby="wf-title wf-desc">
+  <title id="wf-title">gov-report-master 작동 방식 — 일곱 단계 워크플로우</title>
+  <desc id="wf-desc">유형 확정 → 인터뷰 → 생각정리 → 뼈대 승인 → 본문 작성 → 검수·평가 → 한글 파일 산출의 일곱 단계. 뼈대 승인은 사람이 반드시 멈추는 지점이고, 검수에서 결함이 나오면 원인이 된 단계로만 되돌아간다. 정부 보고서 작성법의 기획·쓰기·편집·전달 네 단계를 절차와 검사로 옮긴 것이다.</desc>
+  <defs>
+    <marker id="ar" markerWidth="8" markerHeight="6" refX="7" refY="3" orient="auto"><polygon points="0 0, 8 3, 0 6" fill="#4f5d75"/></marker>
+    <marker id="ar-a" markerWidth="8" markerHeight="6" refX="7" refY="3" orient="auto"><polygon points="0 0, 8 3, 0 6" fill="#eb6c36"/></marker>
+  </defs>
+  <rect width="1200" height="500" fill="#f5f5f5"/>
+  <text x="28" y="48" font-size="10.5" fill="#4f5d75" font-family="'SFMono-Regular',Consolas,'Liberation Mono',Menlo,monospace" font-weight="500" letter-spacing="0.18em">GOV-REPORT-MASTER · WORKFLOW</text>
+  <text x="28" y="88" font-size="28.0" fill="#2d3142" font-family="'Pretendard','Apple SD Gothic Neo','Malgun Gothic','Segoe UI',system-ui,sans-serif" font-weight="600">보고서 한 편이 나오기까지</text>
+  <text x="28" y="116" font-size="13.5" fill="#4f5d75" font-family="'Pretendard','Apple SD Gothic Neo','Malgun Gothic','Segoe UI',system-ui,sans-serif">참고자료와 표준서식을 넣으면 일곱 단계로 진행합니다. 정부 보고서 작성법의</text>
+  <text x="28" y="136" font-size="13.5" fill="#4f5d75" font-family="'Pretendard','Apple SD Gothic Neo','Malgun Gothic','Segoe UI',system-ui,sans-serif">기획·쓰기·편집·전달 네 단계를 그대로 절차와 검사로 옮긴 것입니다.</text>
+  <path d="M 652,184 H 608 Q 600,184 600,192 V 208" fill="none" stroke="#eb6c36" stroke-width="1.2" marker-end="url(#ar-a)"/>
+  <text x="660" y="188" font-size="14.0" fill="#2d3142" font-family="'Pretendard','Apple SD Gothic Neo','Malgun Gothic','Segoe UI',system-ui,sans-serif" font-weight="500">뼈대를 승인받기 전에는 본문을 쓰지 않는다</text>
+  <line x1="168" y1="268" x2="192" y2="268" stroke="#4f5d75" stroke-width="1.2" marker-end="url(#ar)"/>
+  <line x1="336" y1="268" x2="360" y2="268" stroke="#4f5d75" stroke-width="1.2" marker-end="url(#ar)"/>
+  <line x1="504" y1="268" x2="528" y2="268" stroke="#eb6c36" stroke-width="1.4" marker-end="url(#ar-a)"/>
+  <line x1="672" y1="268" x2="696" y2="268" stroke="#eb6c36" stroke-width="1.4" marker-end="url(#ar-a)"/>
+  <line x1="840" y1="268" x2="864" y2="268" stroke="#4f5d75" stroke-width="1.2" marker-end="url(#ar)"/>
+  <line x1="1008" y1="268" x2="1032" y2="268" stroke="#4f5d75" stroke-width="1.2" marker-end="url(#ar)"/>
+  <path d="M 936,320 V 348 Q 936,356 928,356 H 776 Q 768,356 768,348 V 324" fill="none" stroke="#4f5d75" stroke-width="1.2" stroke-dasharray="5,4" marker-end="url(#ar)"/>
+  <rect x="836" y="332" width="32" height="16" fill="#f5f5f5"/>
+  <text x="852" y="344" font-size="12.0" fill="#4f5d75" font-family="'Pretendard','Apple SD Gothic Neo','Malgun Gothic','Segoe UI',system-ui,sans-serif" text-anchor="middle">반려</text>
+  <rect x="28" y="216" width="136" height="104" rx="6" fill="#ffffff" stroke="#2d3142" stroke-width="1"/>
+  <text x="44" y="240" font-size="10.0" fill="#7a8399" font-family="'SFMono-Regular',Consolas,'Liberation Mono',Menlo,monospace" font-weight="500" letter-spacing="0.12em">01</text>
+  <text x="44" y="268" font-size="15.0" fill="#2d3142" font-family="'Pretendard','Apple SD Gothic Neo','Malgun Gothic','Segoe UI',system-ui,sans-serif" font-weight="600">유형 확정</text>
+  <text x="44" y="292" font-size="12.0" fill="#4f5d75" font-family="'Pretendard','Apple SD Gothic Neo','Malgun Gothic','Segoe UI',system-ui,sans-serif">10종 중 하나</text>
+  <text x="44" y="308" font-size="12.0" fill="#4f5d75" font-family="'Pretendard','Apple SD Gothic Neo','Malgun Gothic','Segoe UI',system-ui,sans-serif">누가 읽는가</text>
+  <rect x="196" y="216" width="136" height="104" rx="6" fill="#ffffff" stroke="#2d3142" stroke-width="1"/>
+  <text x="212" y="240" font-size="10.0" fill="#7a8399" font-family="'SFMono-Regular',Consolas,'Liberation Mono',Menlo,monospace" font-weight="500" letter-spacing="0.12em">02</text>
+  <text x="212" y="268" font-size="15.0" fill="#2d3142" font-family="'Pretendard','Apple SD Gothic Neo','Malgun Gothic','Segoe UI',system-ui,sans-serif" font-weight="600">인터뷰</text>
+  <text x="212" y="292" font-size="12.0" fill="#4f5d75" font-family="'Pretendard','Apple SD Gothic Neo','Malgun Gothic','Segoe UI',system-ui,sans-serif">한 번에 한 질문</text>
+  <text x="212" y="308" font-size="12.0" fill="#4f5d75" font-family="'Pretendard','Apple SD Gothic Neo','Malgun Gothic','Segoe UI',system-ui,sans-serif">유형별 질문</text>
+  <rect x="364" y="216" width="136" height="104" rx="6" fill="#ffffff" stroke="#2d3142" stroke-width="1"/>
+  <text x="380" y="240" font-size="10.0" fill="#7a8399" font-family="'SFMono-Regular',Consolas,'Liberation Mono',Menlo,monospace" font-weight="500" letter-spacing="0.12em">03</text>
+  <text x="380" y="268" font-size="15.0" fill="#2d3142" font-family="'Pretendard','Apple SD Gothic Neo','Malgun Gothic','Segoe UI',system-ui,sans-serif" font-weight="600">생각정리</text>
+  <text x="380" y="292" font-size="12.0" fill="#4f5d75" font-family="'Pretendard','Apple SD Gothic Neo','Malgun Gothic','Segoe UI',system-ui,sans-serif">Why1 → Why2</text>
+  <text x="380" y="308" font-size="12.0" fill="#4f5d75" font-family="'Pretendard','Apple SD Gothic Neo','Malgun Gothic','Segoe UI',system-ui,sans-serif">How → What</text>
+  <rect x="532" y="216" width="136" height="104" rx="6" fill="rgba(235,108,54,0.08)" stroke="#eb6c36" stroke-width="1.4"/>
+  <text x="548" y="240" font-size="10.0" fill="#eb6c36" font-family="'SFMono-Regular',Consolas,'Liberation Mono',Menlo,monospace" font-weight="500" letter-spacing="0.12em">04</text>
+  <text x="548" y="268" font-size="15.0" fill="#2d3142" font-family="'Pretendard','Apple SD Gothic Neo','Malgun Gothic','Segoe UI',system-ui,sans-serif" font-weight="600">뼈대 승인</text>
+  <text x="548" y="292" font-size="12.0" fill="#4f5d75" font-family="'Pretendard','Apple SD Gothic Neo','Malgun Gothic','Segoe UI',system-ui,sans-serif">목차·쪽수·밀도</text>
+  <text x="548" y="308" font-size="12.0" fill="#eb6c36" font-family="'Pretendard','Apple SD Gothic Neo','Malgun Gothic','Segoe UI',system-ui,sans-serif">사람이 승인</text>
+  <rect x="700" y="216" width="136" height="104" rx="6" fill="#ffffff" stroke="#2d3142" stroke-width="1"/>
+  <text x="716" y="240" font-size="10.0" fill="#7a8399" font-family="'SFMono-Regular',Consolas,'Liberation Mono',Menlo,monospace" font-weight="500" letter-spacing="0.12em">05</text>
+  <text x="716" y="268" font-size="15.0" fill="#2d3142" font-family="'Pretendard','Apple SD Gothic Neo','Malgun Gothic','Segoe UI',system-ui,sans-serif" font-weight="600">본문 작성</text>
+  <text x="716" y="292" font-size="12.0" fill="#4f5d75" font-family="'Pretendard','Apple SD Gothic Neo','Malgun Gothic','Segoe UI',system-ui,sans-serif">두괄식 · 개조식</text>
+  <text x="716" y="308" font-size="12.0" fill="#4f5d75" font-family="'Pretendard','Apple SD Gothic Neo','Malgun Gothic','Segoe UI',system-ui,sans-serif">위계 6단</text>
+  <rect x="868" y="216" width="136" height="104" rx="6" fill="#ffffff" stroke="#2d3142" stroke-width="1"/>
+  <text x="884" y="240" font-size="10.0" fill="#7a8399" font-family="'SFMono-Regular',Consolas,'Liberation Mono',Menlo,monospace" font-weight="500" letter-spacing="0.12em">06</text>
+  <text x="884" y="268" font-size="15.0" fill="#2d3142" font-family="'Pretendard','Apple SD Gothic Neo','Malgun Gothic','Segoe UI',system-ui,sans-serif" font-weight="600">검수·평가</text>
+  <text x="884" y="292" font-size="12.0" fill="#4f5d75" font-family="'Pretendard','Apple SD Gothic Neo','Malgun Gothic','Segoe UI',system-ui,sans-serif">게이트 스크립트</text>
+  <text x="884" y="308" font-size="12.0" fill="#4f5d75" font-family="'Pretendard','Apple SD Gothic Neo','Malgun Gothic','Segoe UI',system-ui,sans-serif">감사 에이전트</text>
+  <rect x="1036" y="216" width="136" height="104" rx="6" fill="#ffffff" stroke="#2d3142" stroke-width="1"/>
+  <text x="1052" y="240" font-size="10.0" fill="#7a8399" font-family="'SFMono-Regular',Consolas,'Liberation Mono',Menlo,monospace" font-weight="500" letter-spacing="0.12em">07</text>
+  <text x="1052" y="268" font-size="15.0" fill="#2d3142" font-family="'Pretendard','Apple SD Gothic Neo','Malgun Gothic','Segoe UI',system-ui,sans-serif" font-weight="600">한글 파일</text>
+  <text x="1052" y="292" font-size="12.0" fill="#4f5d75" font-family="'Pretendard','Apple SD Gothic Neo','Malgun Gothic','Segoe UI',system-ui,sans-serif">HWPX 생성</text>
+  <text x="1052" y="308" font-size="12.0" fill="#4f5d75" font-family="'Pretendard','Apple SD Gothic Neo','Malgun Gothic','Segoe UI',system-ui,sans-serif">편집 표준 검사</text>
+  <text x="28" y="388" font-size="12.5" fill="#4f5d75" font-family="'Pretendard','Apple SD Gothic Neo','Malgun Gothic','Segoe UI',system-ui,sans-serif">검수에서 결함이 나오면 전체를 다시 쓰지 않고, 원인이 된 단계로만 되돌아갑니다.</text>
+  <line x1="28" y1="412" x2="1172" y2="412" stroke="rgba(45,49,66,0.12)" stroke-width="1"/>
+  <text x="28" y="444" font-size="13.5" fill="#2d3142" font-family="'Pretendard','Apple SD Gothic Neo','Malgun Gothic','Segoe UI',system-ui,sans-serif" font-weight="600">작성 4단계</text>
+  <text x="28" y="464" font-size="12.0" fill="#4f5d75" font-family="'Pretendard','Apple SD Gothic Neo','Malgun Gothic','Segoe UI',system-ui,sans-serif">기획 → 쓰기 → 편집 → 전달</text>
+  <text x="412" y="444" font-size="13.5" fill="#2d3142" font-family="'Pretendard','Apple SD Gothic Neo','Malgun Gothic','Segoe UI',system-ui,sans-serif" font-weight="600">본문 위계</text>
+  <text x="412" y="464" font-size="12.0" fill="#4f5d75" font-family="'Pretendard','Apple SD Gothic Neo','Malgun Gothic','Segoe UI',system-ui,sans-serif">Ⅰ → 1 → □ → ○ → - → ·  (필요한 만큼만)</text>
+  <text x="796" y="444" font-size="13.5" fill="#2d3142" font-family="'Pretendard','Apple SD Gothic Neo','Malgun Gothic','Segoe UI',system-ui,sans-serif" font-weight="600">편집 표준</text>
+  <text x="796" y="464" font-size="12.0" fill="#4f5d75" font-family="'Pretendard','Apple SD Gothic Neo','Malgun Gothic','Segoe UI',system-ui,sans-serif">함초롬바탕 15p · 줄간격 160% · 여백 20mm</text>
+</svg>
