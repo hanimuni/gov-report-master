@@ -34,7 +34,7 @@ description: "대한민국 공무원·공공기관 실무자가 장·차관·실
 | 유형별 뼈대 | `templates/{NN-type}.md` | 유형 확정 후 |
 | 유형별 체크 | `checklists/type-checklists.md` | Phase 6 최종 점검 시 |
 | 실제 사례 | `assets/samples/INDEX.md` → 개별 카드 | 분량·문체·골격 감 잡을 때 |
-| 대표 원문 3건 | `assets/corpus/대표-{기획\|상황\|결과}*.md` | 실제 밀도·어투가 필요할 때 |
+| 대표 원문 3건 | `assets/corpus/대표-{기획\|상황\|결과}*.md` | 실제 밀도·어투가 필요할 때. **없을 수 있다** — 공개 저장소에는 담지 않으므로 파일이 없으면 샘플카드·프로파일로 대신한다(`assets/corpus/README.md`) |
 
 **게이트 스크립트** (전부 `exit 0=PASS · 1=FAIL · 2=경고 · 3=오류`, stdout은 JSON)
 

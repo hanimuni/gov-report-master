@@ -4,3 +4,7 @@ __pycache__/
 # eval 실행 부산물 — E6(analyze_form)·E7(build chain) 이 만든다
 skills/gov-report-master/out/
 *.__pagecount.svg
+
+# 부처 보고서 원문 정규화본 — 재배포하지 않는다 (assets/corpus/README.md 참조)
+skills/gov-report-master/assets/corpus/*.md
+!skills/gov-report-master/assets/corpus/README.md
