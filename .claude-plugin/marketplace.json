@@ -1,6 +1,6 @@
 {
-  "name": "gov-report-local",
-  "description": "정부 보고서 작성 파이프라인 로컬 마켓플레이스",
+  "name": "gov-report",
+  "description": "정부 보고서 작성 파이프라인 마켓플레이스",
   "owner": {
     "name": "Hani"
   },

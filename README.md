@@ -6,23 +6,23 @@
 
 ## 설치
 
-두 도구 모두 같은 저장소를 마켓플레이스로 읽습니다. 마켓플레이스 이름은 `gov-report-local` 입니다.
+두 도구 모두 같은 저장소를 마켓플레이스로 읽습니다. 마켓플레이스 이름은 `gov-report` 입니다.
 
 **클로드 코드 (Claude Code)**
 
 ```bash
 claude plugin marketplace add hanimuni/gov-report-master
-claude plugin install gov-report-master@gov-report-local
+claude plugin install gov-report-master@gov-report
 ```
 
-세션 안에서라면 `/plugin marketplace add hanimuni/gov-report-master` → `/plugin install gov-report-master@gov-report-local`.
+세션 안에서라면 `/plugin marketplace add hanimuni/gov-report-master` → `/plugin install gov-report-master@gov-report`.
 설치 후 **재시작해야** 적용됩니다.
 
 **코덱스 (Codex CLI — `codex plugin` 명령이 있는 버전. 0.147.0에서 확인)**
 
 ```bash
 codex plugin marketplace add hanimuni/gov-report-master
-codex plugin add gov-report-master@gov-report-local
+codex plugin add gov-report-master@gov-report
 ```
 
 코덱스에서는 `skills/` 만 로드됩니다. `agents/` 의 서브에이전트 4종은 클로드 코드 기능이라
@@ -60,7 +60,7 @@ v0.4까지는 **좋은 원고를 쓰는 스킬**이었습니다. HWPX 산출은 
 ```
 gov-report-master/                저장소 루트 = 마켓플레이스 루트
 ├─ .claude-plugin/
-│  └─ marketplace.json         name: gov-report-local · source: ./plugin
+│  └─ marketplace.json         name: gov-report · source: ./plugin
 ├─ README.md
 ├─ docs/workflow.svg           위 작동 방식 그림
 └─ plugin/                     플러그인 본체 (설치되는 단위)
