@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 """
-style_guard.py — 산출 HWPX 의 편집 품질 검사 (T1~T8)
+style_guard.py — 산출 HWPX 의 편집 품질 검사 (T1~T10)
 
 무엇을 재는가
 -------------
@@ -10,12 +10,14 @@ style_guard.py — 산출 HWPX 의 편집 품질 검사 (T1~T8)
 
   T1 위계별 글자 크기가 표준표와 일치      MAJOR
   T2 인접 위계 크기 역전                   CRITICAL
-  T3 본문 줄간격 160%                      MAJOR
+  T3 본문 줄간격 160% 벗어난 문단 ≤ 25%    MAJOR
   T4 마커 문단의 내어쓰기 적용             MAJOR
   T5 본문=명조 / 제목·항목=고딕            MINOR
   T6 본문 볼드 비율 30~70%                 MINOR
   T7 문서 전체 글자 크기 종수 ≤ 7          MINOR
   T8 좌·우 여백 20mm · 표 글자 < 본문      MINOR
+  T9 서식 목록 id 가 연속 오름차순         CRITICAL
+  T10 채움 없는 자리의 흰 글자             CRITICAL
 
 기준값은 `profiles/typography.json` (기재부·인사혁신처·농식품부 3건 실측).
 근거와 해설은 `references/10-typography.md`.
@@ -49,6 +51,7 @@ HH = "{http://www.hancom.co.kr/hwpml/2011/head}"
 HP = "{http://www.hancom.co.kr/hwpml/2011/paragraph}"
 
 HWPUNIT_MM = 7200 / 25.4
+PAPER = "#FFFFFF"          # 종이색. 이 색 글자가 채움 없는 자리에 있으면 안 보인다.
 
 # 줄 첫머리 마커 → 위계 id. 순서가 곧 우선순위다(긴 것부터).
 MARKER_LEVEL = [
@@ -59,7 +62,8 @@ MARKER_LEVEL = [
 # kordoc 은 장 배너를 「Ⅰ」 셀과 「보고 개요」 셀로 쪼개 넣는다.
 # 점이 없는 로마숫자 단독 셀도 장으로 인식해야 배너가 표 본문으로 잘못 잡히지 않는다.
 RE_CHAPTER = re.compile(r"^[ⅠⅡⅢⅣⅤⅥⅦⅧⅨⅩ]+\s*(?:[.·]|$)")
-RE_SECTION = re.compile(r"^(?:[①-⑮]|\[\d+\]|\d{1,2}\s*[.)])\s")
+# 절(節)은 네모박스 숫자로 조판된다. 텍스트로는 ❶❷❸·【1】·①②③·1. 로 나타난다.
+RE_SECTION = re.compile(r"^(?:[①-⑮]|[❶-❿]|【\d{1,2}】|\[\d+\]|\d{1,2}\s*[.)])\s")
 # 「2026. 9. 2.」 같은 날짜가 절 번호로 잡히지 않게 막는다
 RE_DATE = re.compile(r"^\d{4}\s*\.")
 
@@ -87,19 +91,39 @@ def read_hwpx(path: str):
     head = ET.fromstring(z.read("Contents/header.xml"))
 
     fonts = {f.get("id"): f.get("face") for f in head.iter(HH + "font")}
+
+    # ★한글은 charPrIDRef·paraPrIDRef 를 id 속성이 아니라 **목록의 순번**으로 읽는다.
+    # 여기서도 순번으로 키를 잡아야 게이트가 한글과 같은 문서를 본다. 순번과 id 가
+    # 어긋나 있으면 T9 가 CRITICAL 로 잡고, 그때는 나머지 측정값을 믿을 수 없다.
+    cp_list = list(head.iter(HH + "charPr"))
+    id_order = {"charProperties": [cp.get("id") for cp in cp_list]}
     chars = {}
-    for cp in head.iter(HH + "charPr"):
+    for i, cp in enumerate(cp_list):
         h, ref = cp.get("height"), cp.find(HH + "fontRef")
-        chars[cp.get("id")] = {
+        chars[str(i)] = {
             "pt": round(int(h) / 100, 1) if h else None,
             "bold": cp.find(HH + "bold") is not None,
             "font": fonts.get(ref.get("hangul")) if ref is not None else None,
+            "color": (cp.get("textColor") or "").upper(),
+            "shade": (cp.get("shadeColor") or "none").lower(),
         }
+    pp_list = list(head.iter(HH + "paraPr"))
+    id_order["paraProperties"] = [pp.get("id") for pp in pp_list]
     paras = {}
-    for pp in head.iter(HH + "paraPr"):
+    for i, pp in enumerate(pp_list):
         ind = next((e for e in pp.iter() if e.tag.endswith("}intent")), None)
         ls = next((e for e in pp.iter() if e.tag.endswith("}lineSpacing")), None)
-        paras[pp.get("id")] = {"indent": _num(ind), "ls": _num(ls)}
+        paras[str(i)] = {"indent": _num(ind), "ls": _num(ls)}
+
+    # 칸 배경색. 색 배경 위의 흰 글자는 정상이므로 T10 에서 걸러내는 데 쓴다.
+    bf_list = list(head.iter(HH + "borderFill"))
+    id_order["borderFills"] = [bf.get("id") for bf in bf_list]
+    id_order["styles"] = [st.get("id") for st in head.iter(HH + "style")]
+    bf_base = int(bf_list[0].get("id")) if bf_list else 0
+    fills = {}
+    for i, bf in enumerate(bf_list):
+        wb = next((e for e in bf.iter() if e.tag.endswith("}winBrush")), None)
+        fills[str(bf_base + i)] = (wb.get("faceColor") or "").upper() if wb is not None else ""
 
     page = None
     rows = []
@@ -113,12 +137,16 @@ def read_hwpx(path: str):
                 page = {k: int(m.get(k, 0)) for k in
                         ("left", "right", "top", "bottom", "header", "footer")}
         # 장·절 배너는 1행짜리 표로 들어온다. 실제 데이터 표(2행 이상)와 구분해 둔다.
-        in_table, in_data_table = set(), set()
+        in_table, in_data_table, cell_fill = set(), set(), {}
         for tb in sec.iter(HP + "tbl"):
             ids = {id(e) for e in tb.iter(HP + "p")}
             in_table |= ids
             if len(tb.findall(HP + "tr")) >= 2:
                 in_data_table |= ids
+            for tc in tb.iter(HP + "tc"):
+                face = fills.get(tc.get("borderFillIDRef"), "")
+                for e in tc.iter(HP + "p"):
+                    cell_fill[id(e)] = face
         for p in sec.iter(HP + "p"):
             segs = []
             for r in p.findall(HP + "run"):
@@ -131,7 +159,15 @@ def read_hwpx(path: str):
             pr = paras.get(p.get("paraPrIDRef"), {})
             first = chars.get(segs[0][0], {})
             nb = sum(len(t) for c, t in segs if chars.get(c, {}).get("bold"))
+            # 칸 배경도 글자색도 흰색이면 화면에서 사라진다(글자 음영이 있으면 제외).
+            back = (cell_fill.get(id(p)) or "").upper()
+            lit = back and back != PAPER
+            hidden = sum(
+                len(t) for c, t in segs
+                if chars.get(c, {}).get("color") == PAPER
+                and not lit and chars.get(c, {}).get("shade", "none") == "none")
             rows.append({
+                "hidden_chars": hidden,
                 "text": text,
                 "level": classify(text),
                 "font": first.get("font"),
@@ -144,7 +180,7 @@ def read_hwpx(path: str):
                 "in_table": id(p) in in_table,
                 "in_data_table": id(p) in in_data_table,
             })
-    return rows, page
+    return rows, page, id_order
 
 
 def classify(text: str) -> str | None:
@@ -172,7 +208,7 @@ def family_of(font: str | None) -> str | None:
     return None
 
 
-def check(rows, page, typo) -> tuple[list, dict]:
+def check(rows, page, typo, id_order=None) -> tuple[list, dict]:
     spec = {lv["id"]: lv for lv in typo["levels"]}
     g = typo["gates"]
     findings, metrics = [], {}
@@ -213,15 +249,23 @@ def check(rows, page, typo) -> tuple[list, dict]:
                 "상위 위계가 하위보다 작다. 크기 지정을 다시 본다.")
 
     # T3 본문 줄간격
+    # 중앙값으로 재면 모집단이 바뀔 때 문서를 고치지 않아도 판정이 뒤집힌다.
+    # (붙임 산문을 표로 옮기자 160% 문단이 105→25개로 줄어 서식이 원래 갖고 있던
+    #  145%가 중앙값이 되면서 MAJOR 가 떴다 — 본문 조판은 한 줄도 바뀌지 않았다.)
+    # 그래서 「표준을 벗어난 문단이 몇 %인가」로 잰다.
     ls = [r["ls"] for r in by_level.get("L4", []) if r["ls"]]
     if ls:
-        med = sorted(ls)[len(ls) // 2]
-        metrics["body_line_spacing"] = med
         t, d = g["T3_body_spacing"]["target"], g["T3_body_spacing"]["tol"]
-        if abs(med - t) > d:
+        off = [v for v in ls if abs(v - t) > d]
+        ratio = len(off) / len(ls)
+        metrics["body_line_spacing"] = sorted(ls)[len(ls) // 2]
+        metrics["body_spacing_off_ratio"] = round(ratio, 2)
+        if ratio > g["T3_body_spacing"].get("max_off_ratio", 0.25):
+            seen = ", ".join("%d%%×%d" % kv for kv in Counter(off).most_common(3))
             add("T3", g["T3_body_spacing"]["severity"],
-                "본문 줄간격 %d%% — 표준 %d%%" % (med, t),
-                "kordoc --line-spacing %d" % t)
+                "본문 줄간격이 표준 %d%%를 벗어난 문단 %.0f%%(%d/%d) — %s"
+                % (t, ratio * 100, len(off), len(ls), seen),
+                "kordoc --line-spacing %d (서식 템플릿마다 값이 다르면 먼저 통일한다)" % t)
 
     # T4 내어쓰기
     need = [r for r in body if r["level"] in ("L3", "L4", "L5", "L6", "N1", "N2")]
@@ -294,6 +338,37 @@ def check(rows, page, typo) -> tuple[list, dict]:
                 "표 글자 %.1fp ≥ 본문 %.1fp" % (med, bsz),
                 "표는 본문보다 1~2p 작게(12~13p)")
 
+    # T9 참조 무결성 — 한글은 참조 번호를 순번으로 읽는다
+    gt9 = g.get("T9_id_order")
+    if gt9 and id_order:
+        broken = []
+        for box in gt9["boxes"]:
+            ids = [int(i) for i in id_order.get(box, []) if i is not None]
+            if not ids:
+                continue
+            if ids != list(range(ids[0], ids[0] + len(ids))):
+                broken.append("%s(%s…)" % (box, ",".join(str(i) for i in ids[-6:])))
+        metrics["id_order_ok"] = not broken
+        if broken:
+            add("T9", gt9["severity"],
+                "선언 순서가 번호 순이 아님 — " + " / ".join(broken),
+                "한글은 charPrIDRef·paraPrIDRef 를 id 가 아니라 목록의 순번으로 읽는다. "
+                "새 서식을 덧붙일 때 id 오름차순으로 이어 붙여라. "
+                "이 항목이 깨지면 T1~T8 의 측정값도 믿을 수 없다.")
+
+    # T10 안 보이는 글자 — 채움 없는 자리의 흰 글자
+    gt10 = g.get("T10_invisible_text")
+    if gt10:
+        hid = [r for r in rows if r.get("hidden_chars")]
+        n = sum(r["hidden_chars"] for r in hid)
+        metrics["invisible_chars"] = n
+        if n:
+            add("T10", gt10["severity"],
+                "채움 없는 자리에 흰 글자 %d자(%d문단)" % (n, len(hid)),
+                "글자색이 종이색과 같으면 화면에서 사라진다. 텍스트 추출로는 안 잡히니 "
+                "한글로 PDF 를 내보내 픽셀로 확인하라.",
+                hid[0]["text"][:40])
+
     metrics["paragraphs"] = len(rows)
     metrics["body_paragraphs"] = len(body)
     metrics["level_counts"] = {k: len(v) for k, v in sorted(by_level.items())}
@@ -303,20 +378,20 @@ def check(rows, page, typo) -> tuple[list, dict]:
 # ---------------------------------------------------------------- main
 
 def main() -> int:
-    ap = argparse.ArgumentParser(description="산출 HWPX 편집 품질 검사 (T1~T8)")
+    ap = argparse.ArgumentParser(description="산출 HWPX 편집 품질 검사 (T1~T10)")
     ap.add_argument("hwpx")
     ap.add_argument("--typography", help="기준 JSON (기본 profiles/typography.json)")
     ap.add_argument("--json-only", action="store_true")
     a = ap.parse_args()
 
     typo = load_typography(a.typography)
-    rows, page = read_hwpx(a.hwpx)
+    rows, page, id_order = read_hwpx(a.hwpx)
     if not rows:
         print(json.dumps({"verdict": "ERROR", "message": "본문 문단을 찾지 못했다"},
                          ensure_ascii=False))
         return 3
 
-    findings, metrics = check(rows, page, typo)
+    findings, metrics = check(rows, page, typo, id_order)
     sev = Counter(f["severity"] for f in findings)
     if sev["CRITICAL"] or sev["MAJOR"]:
         verdict, code = "FAIL", 1
