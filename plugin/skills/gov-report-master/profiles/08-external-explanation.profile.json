@@ -20,7 +20,8 @@
     "couplet": "WARN",
     "question_mark": "WARN",
     "marker_min": "OFF",
-    "hierarchy_depth": "MAJOR"
+    "hierarchy_depth": "MAJOR",
+    "admin_terms": "WARN"
   },
   "derived_from": "10",
   "_derived_note": "이 유형에는 전용 레퍼런스가 없다. 10 프로파일에서 파생한 참고값이며 실측치가 아니다. 게이트는 방향(min)만 적용하고 절대값으로 반려하지 않는다.",

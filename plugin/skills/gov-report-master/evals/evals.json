@@ -273,6 +273,50 @@
           "value": "10 10"
         }
       ]
+    },
+    {
+      "id": "E13-q27-admin-terms-detect",
+      "why": "「공직윤리제도 발전방안」에서 '어긋나·조이고·맡김·메움'이 다수 발견돼 전면 수정해야 했다. 이 네 표현과 동류(늘리다·줄이다·고치다)를 게이트가 반드시 잡아야 한다. exit 1 은 toy fixture 에 원인분석 장이 없어 S3 가 함께 뜨기 때문이며, 이 케이스의 판정 대상은 metrics 다.",
+      "cmd": "python scripts/draft_guard.py evals/fixtures/q27-admin-terms.md --profile profiles/01-policy-review.profile.json --json-only",
+      "exit": 1,
+      "assert": [
+        {
+          "path": "metrics.admin_term_violations",
+          "op": ">=",
+          "value": 7
+        }
+      ]
+    },
+    {
+      "id": "E14-q27-admin-terms-no-false-positive",
+      "why": "오탐이 나면 에이전트가 정상 행정용어를 망친다. 최고치·구조여건·줄임말·키워드·붙임·사각지대와 정답 표현(위탁·충원·보완·개정·증원·단축)에서 한 건도 걸리면 안 된다.",
+      "cmd": "python scripts/draft_guard.py evals/fixtures/q27-admin-terms-clean.md --profile profiles/01-policy-review.profile.json --json-only",
+      "exit": 1,
+      "assert": [
+        {
+          "path": "metrics.admin_term_violations",
+          "op": "==",
+          "value": 0
+        },
+        {
+          "path": "metrics.admin_term_warnings",
+          "op": "==",
+          "value": 0
+        }
+      ]
+    },
+    {
+      "id": "E15-q27-admin-terms-off-for-speech",
+      "why": "⑨ 말씀자료(축사·기념사)에서 비유는 금지가 아니라 관행이다. guard_overrides.admin_terms=OFF 가 실제로 먹는지 확인한다.",
+      "cmd": "python scripts/draft_guard.py evals/fixtures/q27-admin-terms.md --profile profiles/09-external-speech.profile.json --json-only",
+      "exit": 1,
+      "assert": [
+        {
+          "path": "metrics.admin_term_violations",
+          "op": "==",
+          "value": 0
+        }
+      ]
     }
   ],
   "runner_note": "evals/run_evals.py 가 cmd 를 그대로 돌려 exit 와 stdout 을 대조한다. 사용법: python evals/run_evals.py <skills/gov-report-master 절대경로> [케이스ID 일부]. path 표기는 JSON 경로이며 [?key=='v'] 는 배열 필터, name[0] 은 인덱스, stdout 은 표준출력 원문이다.",
