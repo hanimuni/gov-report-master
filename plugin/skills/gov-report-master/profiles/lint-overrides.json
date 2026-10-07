@@ -45,6 +45,21 @@
       "kordoc": "warning",
       "ours": "WARN",
       "reason": "항목 줄이 실측 중앙 31자를 크게 넘음. 유효한 지적이므로 그대로 둔다."
+    },
+    "QUESTION_EXCLAIM": {
+      "kordoc": "error",
+      "ours": "TYPE_DEPENDENT",
+      "reason": "물음표·느낌표. 기본 ERROR, ⑧ 보도자료 WARN, ⑨ 말씀자료 OFF — 프로파일 guard_overrides.question_mark 가 정한다(references/09 §4). 이 연결이 빠져 있어 프로파일 값이 읽히지 않았다."
+    },
+    "CONTRAST_CHECK": {
+      "kordoc": "warning",
+      "ours": "ADVISORY",
+      "reason": "kordoc 4.19 신규. 「A가 아닌 B」에서 B가 구체 선택지인지 확인하라는 환기다. 제도·기관을 대비한 정상 문장에서 한 원고당 6~10건 울렸다(실측) — 판정이 아니라 조언으로 둔다. B가 추상어일 때는 RHETORIC_CONTRAST 가 따로 잡는다."
+    },
+    "DISCRIMINATORY_TERM": {
+      "kordoc": "warning",
+      "ours": "WARN",
+      "reason": "kordoc 4.19 신규. 차별·비하 표현 순화(미망인 → 고인의 배우자). 유효한 지적이다. 다만 법령·제도의 고유 명칭이면 그대로 둔다."
     }
   },
   "masked_regions": {
@@ -53,20 +68,20 @@
     "blockquote": "^\\s*>",
     "code_fence": "^\\s*```",
     "citation_line": "^\\s*▸",
+    "html_comment": "^\\s*<!--",
     "signature_block": "(작성자\\s*[:：]|\\(인\\)|서명\\s*또는\\s*인)",
     "purpose_box": "_note: 제목 바로 아래 blockquote 4행 이내 — blockquote 마스크로 함께 처리됨"
   },
   "error_channel": {
-    "_comment": "ERROR 채널로 올릴 kordoc 룰. 여기 없는 룰은 WARN 이하로 처리한다. 편람 13룰 원전만 ERROR.",
+    "_comment": "ERROR 채널로 올릴 kordoc 룰. 여기 없는 룰은 WARN 이하로 처리한다. 편람 13룰 원전 가운데 kordoc 이 error 로 내는 것만 올린다. ⚠️ 이름은 kordoc 이 실제로 내는 코드여야 한다 — 예전 목록(DATE_FORMAT·TIME_FORMAT·AMOUNT_FORMAT·ATTACH_FORMAT·END_MARK·BRACKET_LAW·SPACING_ORG)은 kordoc 에 없는 이름이라 한 번도 발동하지 않았다. kordoc 을 올린 뒤에는 `npx -y kordoc@^4 lint` 출력의 코드와 다시 맞춘다(4.19.0 기준).",
     "rules": [
-      "DATE_FORMAT",
-      "TIME_FORMAT",
-      "AMOUNT_FORMAT",
-      "ATTACH_FORMAT",
-      "END_MARK",
-      "BRACKET_LAW",
-      "COLON_SPACE",
-      "SPACING_ORG"
+      "DATE_NO_SPACE",
+      "DATE_ZERO_PAD",
+      "TIME_AMPM",
+      "TIME_COLON_SP",
+      "MONEY_CHEONWON",
+      "BUNIM_COLON",
+      "KKAJI_DUP"
     ]
   },
   "rule_line_exclusions": {

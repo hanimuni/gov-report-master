@@ -7,7 +7,7 @@ evaluate.py — 종합 판정 · 반려 역매핑 (Phase 6)
 게이트 스크립트들의 결과를 하나로 합쳐 **PASS / PASS-WITH-WARNINGS / FAIL** 을 내고,
 FAIL이면 각 결함을 **어느 Phase로 되돌려야 하는지**(references/09 §7 역매핑) 지시한다.
 
-  draft_guard.py    Q3~Q5 · Q8 · Q9 · Q17~Q21 + kordoc lint(overrides 적용)
+  draft_guard.py    Q3~Q5 · Q8 · Q9 · Q17~Q25 · Q27 · Q28 + kordoc lint(overrides 적용)
   density_guard.py  Q10~Q13 · Q16                    (HWPX가 있을 때만)
   report-auditor    Q6 · Q7 · S1 · S2 · S6 · S8~S10  (의미 판단 — 사람/에이전트 몫)
   evaluate.py 자신  S3 · S4 · S5 · S7                (기계로 잡히는 정성 4종)

@@ -12,14 +12,14 @@
 
 | 항목 | 값 |
 |---|---|
-| 엔진 | `npx -y kordoc@^4` (메이저 고정). **실행본 4.12.0** — `--version` 으로 확인한다 |
+| 엔진 | `npx -y kordoc@^4` (메이저 고정). **검증된 실행본 4.19.0**(2026-10-07) — `--version` 으로 확인한다. 마이너가 올라가면 lint 룰과 파서가 바뀌므로 `evals/run_evals.py` 를 다시 돌린다(4.12 → 4.19 에서 회귀 2건이 조용히 깨져 있었다) |
 | 필요 런타임 | Node 18+ (확인: v24.13.1). 한컴오피스·Windows COM **불필요** |
 | 첫 실행 | 패키지 다운로드로 느림(네트워크 필요). 이후 캐시 |
 | 산출 포맷 | **항상 `.hwpx`**. `.hwp` 바이너리는 생성하지 않는다 |
 
 > ⚠️ **로컬 소스 클론은 CLI 계약의 정본이 아니다.**
 > `~/.claude/plugins/marketplaces/kordoc/src/cli.ts` 는 **4.2.0** 클론이고
-> `npx -y kordoc@^4` 가 실제로 실행하는 것은 **4.12.0** 이다(10 마이너 차이).
+> `npx -y kordoc@^4` 가 실제로 실행하는 것은 **4.19.0** 이다(17 마이너 차이).
 > 옵션 유무를 소스에서 판단하면 틀린다 — **`--help` 실측만이 정본**이다.
 > 실제로 이 착오로 `lint --munche` 가 "없다"고 잘못 판정된 일이 있었다(있다).
 > 아래 §4의 함정 목록도 `--help` 실측 결과다.
@@ -140,6 +140,8 @@ npx -y kordoc@^4 generate 초안.md -o 결과.hwpx --preset 개조식 --profile 
 | `COLON_SPACE` (`작성자 :  홍길동`) | **제외** | 서명·날인란은 본문이 아니다 |
 | `LEAD_ENDING` / `LEAD_LONG` | **제외** | kordoc이 **보고 취지 글상자**(□1 + ○3 = 4행)를 리드문 한 문장으로 오인 |
 | `AI_EM_DASH` · `AI_BOLD_OVERUSE` | **advisory** | 조언용 warning. 실패가 아니다 |
+| `CONTRAST_CHECK` (4.19 신규) | **advisory** | 「A가 아닌 B」의 B가 구체 선택지인지 확인하라는 환기. 정상 문장에서 원고당 6~10건 울린다 |
+| `DATE_NO_SPACE`·`DATE_ZERO_PAD`·`TIME_AMPM`·`TIME_COLON_SP`·`MONEY_CHEONWON`·`BUNIM_COLON`·`KKAJI_DUP` | **ERROR 유지** | 편람 표기 규정. kordoc 이 error 로 내는 것을 그대로 받는다 |
 
 정본은 `profiles/lint-overrides.json`. `draft_guard.py` 가 kordoc JSON을 받아 이 표대로
 승격·격하·제외한 뒤 최종 판정한다. **그대로 흘리면 에이전트가 무해한 경고에 반응해 본문을 망친다.**

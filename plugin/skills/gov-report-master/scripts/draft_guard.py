@@ -18,6 +18,7 @@ kordoc 결과는 `profiles/lint-overrides.json` 으로 심각도를 재정의한
 
   --final    제출용 B 검사 (플레이스홀더 0건 강제)
   --baseline 골든 캘리브레이션 모드 — 판정을 내지 않고 현황만 기록
+  -o 파일    판정 JSON 을 파일로도 쓴다. PowerShell 에서는 `>` 대신 이것을 쓴다
 
 출력 계약 (references/09-evaluation.md §8)
   exit 0=PASS · 1=FAIL · 2=PASS-WITH-WARNINGS · 3=실행 오류
@@ -132,6 +133,11 @@ ADMIN_RULES = (
     + [("Q27c", "WARN", "주의군·구어체", r, a) for r, a in ADMIN_WARN]
 )
 ADMIN_COMPILED = [(fid, sev, kind, re.compile(rx), alt) for fid, sev, kind, rx, alt in ADMIN_RULES]
+
+# Q28 표기 변이 — 띄어 쓴 두 어절(각 2자 이상)과 그것을 붙여 쓴 한 어절을 찾는다
+RE_HANGUL_WORD = re.compile(r"[가-힣]{2,}")
+RE_HANGUL_PAIR = re.compile(r"(?<![가-힣])([가-힣]{2,}) (?=([가-힣]{2,}))")
+RE_PARTICLE_TAIL = re.compile(r"(?:으로|에서|에게|까지|부터|이나|처럼|보다|은|는|이|가|을|를|의|에|도|만|과|와|로)$")
 NARRATIVE_END = re.compile(r"(?:이다|한다|있다|없다|였다|했다|된다|것이다)\s*[.]?\s*$")
 NOMINAL_END = re.compile(
     r"(?:함|임|음|됨|있음|없음|필요|예정|추진|검토|가능|곤란|우려|완료|실시|확보|"
@@ -255,7 +261,8 @@ def apply_overrides(items: list[dict], overrides: dict, masked: list[bool],
             dropped.append({**it, "why": "마스킹 구간(표·인용·서명란·코드펜스)"})
             continue
         if ours == "TYPE_DEPENDENT":
-            key = {"COUPLET": "couplet"}.get(rule, rule.lower())
+            key = {"COUPLET": "couplet",
+                   "QUESTION_EXCLAIM": "question_mark"}.get(rule, rule.lower())
             ours = guard_ov.get(key, "ERROR")
             if ours == "OFF":
                 dropped.append({**it, "why": "유형 {} 에서 해제된 룰".format(type_id)})
@@ -354,18 +361,23 @@ def check_own_rules(lines: list[str], masked: list[bool], guard_ov: dict,
                          "한 깊이에는 한 부호만. 장(章) 계열과 본문 계열의 병용은 정상이다"))
     m["mixed_depth_markers"] = len(mixed)
 
-    # Q9 문장 길이 — 위계별로 상한이 다르다(references/14-content-density.md §2)
-    #   ○ 29~67자 · - 30~62자 · ※ 35~63자 → 논리 단락 기준이므로 46자는 ○ 에만 건다.
-    #   `-` 를 46자로 재면 규정대로 쓴 설명이 전부 위반이 된다(실측 중앙 40자, p75 62자).
-    LIMIT = {"○": 46, "-": 75, "·": 46, "※": 75, "*": 75, "□": 46}
+    # Q9 문장 길이 — 위계별 상한은 실측 p90 이다(references/14-content-density.md §2)
+    #   □ 65자 · ○ 80자 · - 75자 · ※ 80자. 판정 기준이 「초과율 10%」이므로 눈금은 p90 이어야 짝이 맞는다.
+    #   예전에는 ○·□ 를 46자로 쟀는데 정상 ○ 의 p75 가 67자라, 규정대로 쓴 원고도 초과율이
+    #   35~56% 로 나와 매번 울렸다(골든 35%). 늘 우는 경보는 눈금이 아니다.
+    #   1쪽 보고(line_46chars=ERROR)는 줄 수가 곧 분량이므로 예전 상한을 그대로 쓴다.
+    LIMIT_P90 = {"□": 65, "○": 80, "-": 75, "·": 46, "※": 80, "*": 75}
+    LIMIT_ONEPAGE = {"□": 46, "○": 46, "-": 75, "·": 46, "※": 75, "*": 75}
     sev46 = on("line_46chars", "MINOR")
+    LIMIT = LIMIT_ONEPAGE if sev46 == "ERROR" else LIMIT_P90
     long46, long4line = [], []
     counted = 0
     for i, ln in enumerate(lines):
         if masked[i] or not ln.strip():
             continue
         mk = re.match(r"^\s*([□○\-·※*])\s", ln)
-        limit = LIMIT.get(mk.group(1), 46) if mk else 46
+        # 부호 없는 줄(①·❶ 과제 줄 등)은 ○ 와 같은 요지 줄로 본다
+        limit = LIMIT[mk.group(1)] if mk else LIMIT["○"]
         n = len(re.sub(r"^\s*[□○\-·※*]\s*", "", ln).strip())
         counted += 1
         if n > limit:
@@ -377,8 +389,9 @@ def check_own_rules(lines: list[str], masked: list[bool], guard_ov: dict,
     ratio = len(long46) / body
     if sev46 != "OFF" and ratio > 0.10:
         f.append(finding("Q9", sev46, "Phase 5", "-",
-                         "위계별 길이 상한 초과 {}/{} ({:.0%}) — 기준 10% (○·□ 46자 / - ※ * 75자)".format(
-                             len(long46), body, ratio),
+                         "위계별 길이 상한 초과 {}/{} ({:.0%}) — 기준 10% ({})".format(
+                             len(long46), body, ratio,
+                             " · ".join("{} {}자".format(k, LIMIT[k]) for k in "□○-※")),
                          "'및'·쉼표에서 끊거나 근거·예시를 세부(-)로 내린다"))
     for n in long4line[:10]:
         f.append(finding("Q9b", "ERROR", "Phase 5", "L{}".format(n),
@@ -496,6 +509,47 @@ def check_own_rules(lines: list[str], masked: list[bool], guard_ov: dict,
                          "행정용어가 아님 '{}' — {}".format(tok, msg),
                          "종결어미는 그대로 두고 어휘만 바꾼다(「맡김→위탁」이지 「맡김→맡긴다」가 아니다). "
                          "→ references/15-administrative-terminology.md"))
+
+    # Q28 표기 변이 — 같은 말을 띄어 쓴 곳과 붙여 쓴 곳이 한 문서에 함께 있다
+    #   (references/13-writing-operations.md §4). 「고지 거부」↔「고지거부」처럼 용어가 흔들리면
+    #   결재자는 서로 다른 개념으로 읽는다. 어느 쪽이 옳은지는 기계가 정하지 못하므로
+    #   판정하지 않고 통보만 한다(실제 부처 보고서 3건에서도 2~23쌍이 나온다).
+    words: dict[str, int] = {}
+    pairs: dict[tuple[str, str], int] = {}
+    for i, ln in enumerate(lines):
+        if masked[i]:
+            continue
+        plain = re.sub(r"\*\*|`|\[AI\]", "", ln)
+        for w in RE_HANGUL_WORD.findall(plain):
+            words[w] = words.get(w, 0) + 1
+        for mm in RE_HANGUL_PAIR.finditer(plain):
+            key = (mm.group(1), mm.group(2))
+            pairs[key] = pairs.get(key, 0) + 1
+    split_by_stem: dict[str, list] = {}               # 어간 → [띄어 쓴 표기, 횟수]
+    for (a, b), n_split in pairs.items():
+        # 조사는 뒤 어절이 3자 이상이고 떼고도 2자가 남을 때만 뗀다 — 「평가」의 '가', 「제도」의 '도'는 조사가 아니다
+        bare = RE_PARTICLE_TAIL.sub("", b) if len(b) >= 3 else b
+        if len(bare) < 2:
+            bare = b
+        stem = a + bare
+        if len(stem) >= 4:
+            rec = split_by_stem.setdefault(stem, ["{} {}".format(a, bare), 0])
+            rec[1] += n_split
+    variants = []
+    for stem, (shown, n_split) in split_by_stem.items():
+        n_joined = sum(c for w, c in words.items()
+                       if w.startswith(stem) and len(w) - len(stem) <= 2)
+        if n_joined:
+            variants.append((n_split + n_joined, "「{}」 {}회 ↔ 「{}」 {}회".format(
+                shown, n_split, stem, n_joined)))
+    variants.sort(reverse=True)
+    m["spacing_variants"] = len(variants)
+    if variants:
+        f.append(finding("Q28", "ADVISORY", "Phase 5", "-",
+                         "표기 변이 {}쌍 — {}".format(
+                             len(variants), " / ".join(v for _, v in variants[:6])),
+                         "한쪽으로 통일한다. 법령·고유명사의 표기가 먼저이고, 없으면 많이 쓴 쪽을 따른다 "
+                         "(references/13 §4)"))
 
     # ── Q22~Q24 내용 밀도 (references/14-content-density.md)
     # 이 세 가지가 없던 탓에 "○ 만 늘어선 라벨 나열" 원고가 게이트를 그대로 통과했다.
@@ -632,6 +686,7 @@ def main() -> int:
     ap.add_argument("--baseline", action="store_true", help="판정 없이 현황만")
     ap.add_argument("--no-kordoc", action="store_true")
     ap.add_argument("--json-only", action="store_true")
+    ap.add_argument("-o", "--out", help="판정 JSON 을 이 파일에도 쓴다 (UTF-8, BOM 없음)")
     args = ap.parse_args()
 
     try:
@@ -684,7 +739,11 @@ def main() -> int:
         result = {"verdict": verdict, "type_id": type_id, "final": args.final,
                   "counts": counts, "findings": findings,
                   "metrics": metrics, "unverifiable": unver}
-        print(json.dumps(result, ensure_ascii=False, indent=2))
+        payload = json.dumps(result, ensure_ascii=False, indent=2)
+        print(payload)
+        if args.out:
+            # PowerShell 의 `>` 는 BOM·UTF-16 을 붙여 json.load 가 깨진다 — 파일은 직접 쓴다
+            Path(args.out).write_text(payload, encoding="utf-8")
 
         if not args.json_only:
             w = sys.stderr

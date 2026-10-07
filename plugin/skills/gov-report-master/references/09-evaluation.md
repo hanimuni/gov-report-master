@@ -40,7 +40,7 @@ FAIL                CRITICAL ≥1  또는  MAJOR ≥1  또는  정성 필수 항
 | Q14 | 구조 무결성 (ZIP·mimetype·XML·manifest) | PASS | `kordoc validate` | CRITICAL |
 | Q15 | 서식 칸 정합 (`binding: hard` 일 때) | 일치 | `format-inspector` | MAJOR |
 | Q16 | **`purpose_box` · `attachment` 존재** | 유형별 필수 | `density_guard` | MAJOR |
-| Q17 | **`*` 와 `※` 혼용** | 혼용 0 | `draft_guard` | ERROR |
+| Q17 | `*` 와 `※` 병용 — 역할을 갈라 썼는가 | — (통보) | `draft_guard` | ADVISORY |
 | Q18 | 같은 서술어 3회 이상 반복 (한 문단) | 0 | `draft_guard` | WARN |
 | Q19 | 볼드론 위반 (조사·서술어·문장 전체 볼드) | 0 | `draft_guard` | WARN |
 | Q20 | 0.2~0.3줄 꼬리 (줄 끝 1~3자) | — | `draft_guard` | WARN |
@@ -51,11 +51,20 @@ FAIL                CRITICAL ≥1  또는  MAJOR ≥1  또는  정성 필수 항
 | Q25 | `-` 글자수 중앙값 | 프로파일 `density.dash_median_chars` | `draft_guard` | ADVISORY |
 | Q26 | 쪽당 마커 수 · 쪽당 `□` 상한 | 프로파일 `density.markers_per_page`·`box_per_page_max` | `density_guard` | MINOR |
 | **Q27** | **행정용어 — 비유·구어·행정 비사용 고유어 동사** | 0건 (`a`·`b` 기준) | `draft_guard` | **MAJOR**(`c`는 WARN) |
+| Q28 | 표기 변이 — 같은 말을 띄어 쓴 곳과 붙여 쓴 곳의 공존 | — (통보) | `draft_guard` | ADVISORY |
 
 > Q22~Q26은 **깊이를 재는 유일한 게이트**다. 이것이 없던 동안 Q9·Q18~Q21이 압축 방향으로만
 > 작동해, `○`만 늘어선 라벨 나열 원고가 그대로 통과했다. 규범은 `references/14-content-density.md`.
-> Q9의 상한은 위계별로 다르다 — `○`·`□` 46자, `-`·`※`·`*` 75자. `-`를 46자로 재면
-> 규정대로 쓴 설명이 전부 위반이 된다(실측 `-` 중앙 40자, p75 62자).
+>
+> Q9의 상한은 **위계별 실측 p90**이다 — `□` 65자 · `○` 80자 · `-` 75자 · `※` 80자(`14` §2).
+> 판정 기준이 「초과율 10%」이므로 눈금이 p90이어야 짝이 맞는다. 예전에는 `○`·`□`를 46자로 쟀는데,
+> 정상 `○`의 p75가 67자라 규정대로 쓴 원고도 초과율이 35~56%로 나와 **매번 울렸다.** 늘 우는
+> 경보는 눈금이 아니고, 에이전트는 그 경보를 끄려고 맥락을 깎는다. ④ 개요정리(1쪽)만 줄 수가 곧
+> 분량이라 예전 상한(`○`·`□` 46자)을 유지한다 — 프로파일 `guard_overrides.line_46chars: ERROR`.
+>
+> Q28은 「고지 거부」와 「고지거부」처럼 **용어가 흔들리는 자리**를 통보한다. 어느 쪽이 옳은지는
+> 기계가 정하지 못하므로 판정하지 않는다(실제 부처 보고서 3건에서도 2~23쌍이 나온다). 법령·고유명사의
+> 표기를 먼저 따르고, 없으면 많이 쓴 쪽으로 통일한다(`13` §4).
 >
 > Q27은 **어휘**를 본다 — 문체가 아니다. 개조식 명사형 종결은 그대로 두고 어간의 어휘만
 > 행정용어로 확정한다(「맡김→위탁」이지 「맡김→맡긴다」가 아니다). 유형별 조정은 프로파일
@@ -71,7 +80,7 @@ FAIL                CRITICAL ≥1  또는  MAJOR ≥1  또는  정성 필수 항
 
 ### 편집 품질 T1~T10 — 원고로는 잴 수 없다
 
-Q1~Q27이 **무엇을 썼나**를 본다면 T1~T10은 **어떻게 앉혔나**를 본다. 글자 크기·줄간격·
+Q1~Q28이 **무엇을 썼나**를 본다면 T1~T10은 **어떻게 앉혔나**를 본다. 글자 크기·줄간격·
 내어쓰기·볼드는 마크다운에 없는 값이라 **산출 HWPX를 직접 열어야** 잰다.
 기준은 기재부·인사혁신처·농식품부 업무보고 3건 실측(`10-typography.md`).
 
@@ -171,8 +180,18 @@ CORE RULE 9의 사다리(`Ⅰ → 1 → □ → ○ → - → ·`)는 **깊이 �
 | `COLON_SPACE` (`작성자 :  홍길동`) | **제외** | 서명·날인란은 본문이 아니다 |
 | `LEAD_ENDING` / `LEAD_LONG` | **제외** | 보고 취지 글상자(□1+○3=4행)를 리드문 한 문장으로 오인 |
 | `AI_EM_DASH` · `AI_BOLD_OVERUSE` | **advisory** | 조언용. 실패가 아니다 |
+| `CONTRAST_CHECK` | **advisory** | 「A가 아닌 B」 확인 환기. 정상 문장에서 원고당 6~10건 울린다 |
+| `DISCRIMINATORY_TERM` | WARN | 차별·비하 표현 순화. 유효한 지적 |
+| `QUESTION_EXCLAIM` | **유형별** | 기본 ERROR · ⑧ WARN · ⑨ OFF (`guard_overrides.question_mark`) |
+| `DATE_NO_SPACE`·`DATE_ZERO_PAD`·`TIME_AMPM`·`TIME_COLON_SP`·`MONEY_CHEONWON`·`BUNIM_COLON`·`KKAJI_DUP` | **ERROR 유지** | 편람 표기 규정 — kordoc 이 error 로 내는 것 |
 
 정본은 `profiles/lint-overrides.json`. **그대로 흘리면 에이전트가 무해한 경고에 반응해 본문을 망친다.**
+
+> ⚠️ **재정의 표의 이름은 kordoc 이 실제로 내는 코드와 같아야 한다.** ERROR 채널에 적어 둔 이름 8개 중
+> 7개가 kordoc 에 없는 코드여서, 날짜·시간·금액 표기 오류가 한 번도 ERROR 로 올라오지 않고 전부
+> WARN 으로 지나갔다(2026-10-07 점검에서 발견). 선언만 있고 발동하지 않는 게이트는 없는 것보다 나쁘다 —
+> 있다고 믿기 때문이다. **kordoc 을 올린 뒤에는 `evals/run_evals.py` 를 돌려 E16·E17 이 통과하는지 본다.**
+> 재정의 표에 없는 신규 룰은 기본 WARN 으로 들어오므로, 낯선 `K:` 코드가 보이면 등급부터 정한다.
 
 ---
 
@@ -229,7 +248,7 @@ FAIL의 결함을 **원인 단계로 역매핑**해 그 단계부터만 다시 �
 | Q6 출처 없는 수치 | **Phase 2.5** | 해당 쟁점만 재조사 |
 | S2 시급성 · S3 원인분석 누락 | **Phase 3** | 4덩어리 재구성 → **G4 재승인** |
 | S4 How·What 혼동 · 목차 구조 | **Phase 4** | 뼈대 수정 → **G5 재승인** |
-| Q1~Q5, Q8, Q9, Q17~Q24, S6~S9 | **Phase 5** | **해당 섹션만** 재작성 |
+| Q1~Q5, Q8, Q9, Q17~Q24, Q27, Q28, S6~S9 | **Phase 5** | **해당 섹션만** 재작성 (Q27·Q28은 표현만 치환) |
 | **Q22·Q24 (설명 층 부족)** | **Phase 5** | **`-` 층을 채운다.** 재료가 없으면 **Phase 2로 돌아가 묻는다** |
 | Q10~Q13, Q16 밀도·쪽수 | **Phase 5** (본문 압축·확장) | 쪽수 초과는 `--no-cover --no-toc` 를 먼저 시도 |
 | Q15 서식 칸 불일치 | **Phase 0.5** | 서식 재해부 |
@@ -255,6 +274,11 @@ stdout  {"verdict", "findings":[{"id","severity","phase_to_retry","location","me
          "metrics":{}, "unverifiable":[]}
 stderr  사람이 읽을 리포트  (--json-only 로 억제)
 ```
+
+**PowerShell 에서 돌릴 때** — 사람용 리포트가 stderr 로 나오므로 `2>&1` 을 붙이면 정상 실행도
+`NativeCommandError` 로 감싸여 실패처럼 보인다. 붙이지 않는다. 종료 코드 2(경고)도 셸이 오류로
+표시하지만 실패가 아니다. JSON 을 파일로 받을 때는 `>` 대신 **`draft_guard.py … -o 파일.json`** 을 쓴다 —
+`>` 는 BOM 을 붙여 `json.load` 가 깨진다(실사용에서 반복된 실패).
 
 `phase_to_retry` 가 §7의 역매핑을 실어 나른다. 에이전트는 이 값만 보고 어디로 돌아갈지 정한다.
 

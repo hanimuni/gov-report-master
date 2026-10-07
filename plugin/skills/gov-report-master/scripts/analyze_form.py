@@ -231,7 +231,9 @@ def build_constraints(slots: dict, layout: dict) -> list[str]:
         out.append("붙임 {}건 칸 — 본문 언급 순서와 번호를 맞춘다".format(
             layout["attachment"]["count"]))
     if not out:
-        out.append("칸 구조가 잡히지 않았다 — 서식이 아니라 일반 문서일 수 있다")
+        out.append("칸 구조가 잡히지 않았다 — 장 제목과 문단 모양만 정한 서식이거나 일반 문서다. "
+                   "서식으로 받은 파일이면 장 제목의 순서·개수와 문단 모양이 제약이다 "
+                   "(references/07-form-fidelity.md §8)")
     return out
 
 

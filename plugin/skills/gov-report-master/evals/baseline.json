@@ -8,16 +8,16 @@
     "note": "이 방법론으로 만든 실제 산출물. 다만 템플릿 01 을 완전히 만족하지는 않는다."
   },
   "baseline_counts": {
-    "MINOR": 1,
-    "WARN": 1,
-    "ADVISORY": 3
+    "WARN": 3,
+    "ADVISORY": 4
   },
   "baseline_metrics": {
     "narrative_endings": 0,
     "placeholders": 8,
     "ai_tag_overuse_paragraphs": 0,
     "mixed_depth_markers": 0,
-    "lines_over_46": 18,
+    "lines_over_46": 1,
+    "spacing_variants": 3,
     "body_emoji": 0,
     "note_star": 0,
     "note_ref": 2,
@@ -27,8 +27,8 @@
     "vague_words": 0,
     "hard_words": 0,
     "kordoc_raw": 12,
-    "kordoc_kept": 3,
-    "kordoc_dropped": 9,
+    "kordoc_kept": 5,
+    "kordoc_dropped": 7,
     "circle_count": 21,
     "dash_count": 7,
     "dash_per_circle": 0.33,
@@ -40,7 +40,9 @@
     "【별첨】·【검증 요약표】 없음 — templates/01 필수 항목",
     "{{ }} 6개인데 '📌 채워넣을 데이터' 섹션 없음",
     "Q22 WARN — `-`:`○` 0.33 (기준 0.8). 이 문서는 ○ 중앙값 55자의 완결서술형이라 MAJOR 가 아니라 WARN 으로 낮춰 잡힌다. 기획·검토형이었다면 FAIL 이 맞다.",
-    "위계별 길이 상한 초과 18줄 — Q9 가 ○·□ 46자 / -·※·* 75자로 분기된 뒤의 값(이전 23줄)"
+    "위계별 길이 상한 초과 1줄 — Q9 상한을 실측 p90(□ 65 · ○ 80 · - 75 · ※ 80자)으로 맞춘 뒤의 값. ○·□ 46자로 재던 때는 18줄(35%)이라 매번 MINOR 가 떴다",
+    "kordoc 채택 5건 = AI_EM_DASH 3(ADVISORY) + DISCRIMINATORY_TERM 2(WARN, '미망인'). 뒤의 것은 kordoc 4.19 신규 룰이다",
+    "Q28 표기 변이 3쌍(ADVISORY) — 개선 방안/개선방안 · 승계 비율/승계비율 · 보완 장치/보완장치"
   ],
   "calibration_result": {
     "kordoc_raw": 12,
@@ -54,5 +56,5 @@
     "final": "CRITICAL 0 · MAJOR 0 · ERROR 0 · MINOR 1 · ADVISORY 3"
   },
   "regression_rule": "새 산출물은 baseline_counts 보다 나빠지면 안 되고, known_gaps 1·2 는 해소돼야 한다.",
-  "_recalibrated": "2026-09-02 · Q22~Q24(내용 밀도) 신설 및 Q9 위계별 분기 반영. references/14-content-density.md"
+  "_recalibrated": "2026-10-07 · kordoc 4.19.0 기준 재측정. Q9 상한 p90 전환 · Q28 신설 · kordoc 신규 룰 반영. (이전: 2026-09-02 Q22~Q24 신설 및 Q9 위계별 분기)"
 }

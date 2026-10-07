@@ -2,7 +2,8 @@
 """evals/evals.json 의 12 케이스를 그대로 돌려 exit·assert 를 대조한다."""
 import io, json, os, re, subprocess, sys
 
-ROOT = sys.argv[1]            # ...\gov-report-master-final\skills\gov-report-master
+# 인자가 없으면 이 파일의 상위(skills/gov-report-master)를 쓴다
+ROOT = sys.argv[1] if len(sys.argv) > 1 else os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 EV = json.load(io.open(os.path.join(ROOT, "evals", "evals.json"), encoding="utf-8"))
 only = sys.argv[2] if len(sys.argv) > 2 else None
 

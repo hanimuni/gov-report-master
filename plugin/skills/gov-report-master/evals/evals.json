@@ -30,13 +30,9 @@
           "path": "operations.headings_demoted",
           "op": ">=",
           "value": 1
-        },
-        {
-          "path": "operations.paragraphs_rejoined",
-          "op": ">=",
-          "value": 1
         }
-      ]
+      ],
+      "_changed": "2026-10-07 · paragraphs_rejoined >= 1 단언을 뺐다. kordoc 4.19 PDF 파서가 끊긴 문단을 스스로 이어 붙여 우리 쪽 재결합이 0건이 된다(4.12 에서는 1건 이상). 상류가 고친 것이지 회귀가 아니다."
     },
     {
       "id": "E2-draft-guard-golden-baseline",
@@ -56,10 +52,11 @@
         },
         {
           "path": "counts.MINOR",
-          "op": "<=",
+          "op": "absent_or",
           "value": 1
         }
-      ]
+      ],
+      "_changed": "2026-10-07 · counts.MINOR 을 '<= 1' 에서 'absent_or 1' 로. Q9 눈금을 고친 뒤 골든의 MINOR 가 0건이 되어 키 자체가 없다(0건인 등급은 counts 에 실리지 않는다). 뜻은 그대로 '1건 이하'다."
     },
     {
       "id": "E3-draft-guard-final-blocks-placeholders",
@@ -97,9 +94,15 @@
         {
           "path": "metrics.kordoc_kept",
           "op": "<=",
-          "value": 4
+          "value": 5
+        },
+        {
+          "path": "counts.ERROR",
+          "op": "absent_or",
+          "value": 0
         }
-      ]
+      ],
+      "_changed": "2026-10-07 · kordoc_kept 상한 4 → 5. kordoc 4.19 가 DISCRIMINATORY_TERM 을 새로 내며 골든의 '미망인' 2건을 잡는다 — 유효한 지적이라 남긴다(AI_EM_DASH 3 + DISCRIMINATORY_TERM 2). 대신 ERROR 0건을 함께 단언한다."
     },
     {
       "id": "E5-to-kordoc-md-no-double-markers",
@@ -317,14 +320,120 @@
           "value": 0
         }
       ]
+    },
+    {
+      "id": "E16-notation-error-channel-fires",
+      "why": "lint-overrides 의 ERROR 채널 이름 8개 중 7개가 kordoc 에 없는 코드여서 날짜·시간 표기 오류가 전부 WARN 으로만 떴다(2026-10-07 점검). 편람 표기 오류와 물음표가 실제로 ERROR 로 올라오는지 알려진 불량 원고로 확인한다.",
+      "cmd": "python scripts/draft_guard.py evals/fixtures/q1-notation-errors.md --profile profiles/01-policy-review.profile.json --json-only",
+      "exit": 1,
+      "assert": [
+        {
+          "path": "findings[?id=='K:DATE_NO_SPACE'].severity",
+          "op": "==",
+          "value": "ERROR"
+        },
+        {
+          "path": "findings[?id=='K:TIME_AMPM'].severity",
+          "op": "==",
+          "value": "ERROR"
+        },
+        {
+          "path": "findings[?id=='K:KKAJI_DUP'].severity",
+          "op": "==",
+          "value": "ERROR"
+        },
+        {
+          "path": "findings[?id=='K:QUESTION_EXCLAIM'].severity",
+          "op": "==",
+          "value": "ERROR"
+        }
+      ]
+    },
+    {
+      "id": "E17-question-mark-off-for-speech",
+      "why": "⑨ 말씀자료는 물음표·느낌표가 관행이다. 프로파일 guard_overrides.question_mark=OFF 가 kordoc QUESTION_EXCLAIM 에 실제로 닿는지 확인한다 — 예전에는 키 이름이 달라(question_exclaim) 읽히지 않았다.",
+      "cmd": "python scripts/draft_guard.py evals/fixtures/q1-notation-errors.md --profile profiles/09-external-speech.profile.json --json-only",
+      "exit": 1,
+      "assert": [
+        {
+          "path": "findings[?id=='K:QUESTION_EXCLAIM'].severity",
+          "op": "absent_or",
+          "value": "OFF"
+        },
+        {
+          "path": "findings[?id=='K:DATE_NO_SPACE'].severity",
+          "op": "==",
+          "value": "ERROR"
+        }
+      ]
+    },
+    {
+      "id": "E18-q9-quiet-on-golden",
+      "why": "Q9 의 ○ 상한 46자는 실측 밴드(○ p75 67자)와 모순돼 골든 35%·사용 원고 35~56% 로 매번 울렸다. 상한을 실측 p90 으로 맞춘 뒤 골든에서 Q9 가 사라져야 한다.",
+      "cmd": "python scripts/draft_guard.py \"D:/고수의 보고법/보고서 코칭 토탈 에이전트/정책기획보고서_수정본_최우진.md\" --profile profiles/01-policy-review.profile.json --no-kordoc --json-only",
+      "exit": 2,
+      "assert": [
+        {
+          "path": "findings[?id=='Q9'].severity",
+          "op": "absent_or",
+          "value": "OFF"
+        },
+        {
+          "path": "metrics.lines_over_46",
+          "op": "<=",
+          "value": 5
+        }
+      ]
+    },
+    {
+      "id": "E19-q9-strict-for-onepager",
+      "why": "반대쪽 끝. ④ 개요정리(1쪽)는 줄 수가 곧 분량이라 예전 상한(○·□ 46자)을 유지한다. 느슨해진 눈금이 1쪽 보고까지 풀어 주면 안 된다.",
+      "cmd": "python scripts/draft_guard.py \"D:/고수의 보고법/보고서 코칭 토탈 에이전트/정책기획보고서_수정본_최우진.md\" --profile profiles/04-summary-onepager.profile.json --no-kordoc --json-only",
+      "exit": 1,
+      "assert": [
+        {
+          "path": "findings[?id=='Q9'].severity",
+          "op": "==",
+          "value": "ERROR"
+        }
+      ]
+    },
+    {
+      "id": "E20-q28-spacing-variants",
+      "why": "「공직윤리제도 발전방안」 검수에서 「고지 거부/고지거부」「직무 관련성/직무관련성」 등 표기 불일치 19건이 사람 손으로 적발됐다. 띄어 쓴 표기와 붙여 쓴 표기가 함께 있으면 통보해야 한다. 「법제업무 평가」「재산등록 제도」처럼 붙여 쓴 짝이 없는 말, 그리고 '평가'의 '가'·'제도'의 '도'를 조사로 오인한 가짜 짝은 걸리면 안 된다 — 정확히 2쌍.",
+      "cmd": "python scripts/draft_guard.py evals/fixtures/q28-spacing-variants.md --profile profiles/01-policy-review.profile.json --no-kordoc --json-only",
+      "assert": [
+        {
+          "path": "metrics.spacing_variants",
+          "op": "==",
+          "value": 2
+        },
+        {
+          "path": "findings[?id=='Q28'].severity",
+          "op": "==",
+          "value": "ADVISORY"
+        }
+      ]
+    },
+    {
+      "id": "E21-q28-clean-no-false-positive",
+      "why": "표기가 일관된 원고에서는 Q28 이 조용해야 한다.",
+      "cmd": "python scripts/draft_guard.py evals/fixtures/q27-admin-terms-clean.md --profile profiles/01-policy-review.profile.json --no-kordoc --json-only",
+      "assert": [
+        {
+          "path": "metrics.spacing_variants",
+          "op": "==",
+          "value": 0
+        }
+      ]
     }
   ],
-  "runner_note": "evals/run_evals.py 가 cmd 를 그대로 돌려 exit 와 stdout 을 대조한다. 사용법: python evals/run_evals.py <skills/gov-report-master 절대경로> [케이스ID 일부]. path 표기는 JSON 경로이며 [?key=='v'] 는 배열 필터, name[0] 은 인덱스, stdout 은 표준출력 원문이다.",
+  "runner_note": "evals/run_evals.py 가 cmd 를 그대로 돌려 exit 와 stdout 을 대조한다. 사용법: python evals/run_evals.py [skills/gov-report-master 절대경로] [케이스ID 일부] — 경로를 생략하면 스크립트 위치에서 찾는다. path 표기는 JSON 경로이며 [?key=='v'] 는 배열 필터, name[0] 은 인덱스, stdout 은 표준출력 원문이다.",
   "cleanup": "E7·E8 은 out/ 아래에만 쓴다(out/eval.hwpx · out/.work). 검사 후 out/ 를 지우면 흔적이 남지 않는다. --workdir 를 주지 않으면 build_report 는 원고 옆에 .gov-report/ 를 만든다 — 사용자 폴더를 오염시키지 않으려면 항상 지정한다.",
   "last_verified": {
-    "date": "2026-09-03",
-    "result": "12/12 통과",
-    "env": "Windows 11 · Python 3.11 · Node v24 · kordoc 4.12.0",
-    "note": "Q25(- 길이 밴드)·Q26(쪽당 밀도) 추가 후 회귀 없음"
+    "date": "2026-10-07",
+    "result": "21/21 통과",
+    "env": "Windows 11 · Python 3.11 · Node v24 · kordoc 4.19.0",
+    "note": "kordoc 4.12 → 4.19 표류로 E1·E4 가 깨져 있었다(상류 파서 개선·신규 lint 룰). 단언을 실측에 맞추고 E16~E21(표기법 ERROR 채널·물음표 유형 해제·Q9 양끝·Q28 표기 변이)을 더했다. kordoc 을 올릴 때마다 이 세트를 다시 돌린다."
   }
 }
