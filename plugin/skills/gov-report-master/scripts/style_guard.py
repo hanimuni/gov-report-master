@@ -49,6 +49,7 @@ from xml.etree import ElementTree as ET
 
 HH = "{http://www.hancom.co.kr/hwpml/2011/head}"
 HP = "{http://www.hancom.co.kr/hwpml/2011/paragraph}"
+HC = "{http://www.hancom.co.kr/hwpml/2011/core}"
 
 HWPUNIT_MM = 7200 / 25.4
 PAPER = "#FFFFFF"          # 종이색. 이 색 글자가 채움 없는 자리에 있으면 안 보인다.
@@ -83,6 +84,28 @@ def load_typography(path: str | None) -> dict:
 
 def _num(el) -> int:
     return int(el.get("value")) if el is not None and el.get("value") else 0
+
+
+def paragraph_background(p, parents, fills) -> str:
+    """가장 가까운 셀·사각형의 채움부터 확인한다. 형제 도형의 색은 상속하지 않는다."""
+    node = parents.get(p)
+    while node is not None:
+        if node.tag == HP + "tc":
+            face = fills.get(node.get("borderFillIDRef"), "")
+            if face:
+                return face
+        elif node.tag == HP + "rect":
+            brush = node.find(HC + "fillBrush")
+            if brush is not None and len(brush):
+                solid = brush.find(HC + "winBrush")
+                if len(brush) == 1 and solid is not None:
+                    face = (solid.get("faceColor") or "").upper()
+                    if solid.get("alpha", "0") == "0" and re.fullmatch(r"#[0-9A-F]{6}", face):
+                        return face
+                # shortcut: 반투명·그라데이션·그림 채움은 가시성을 입증하지 못하므로 네이티브 확인 필요.
+                return PAPER
+        node = parents.get(node)
+    return ""
 
 
 def read_hwpx(path: str):
@@ -137,16 +160,13 @@ def read_hwpx(path: str):
                 page = {k: int(m.get(k, 0)) for k in
                         ("left", "right", "top", "bottom", "header", "footer")}
         # 장·절 배너는 1행짜리 표로 들어온다. 실제 데이터 표(2행 이상)와 구분해 둔다.
-        in_table, in_data_table, cell_fill = set(), set(), {}
+        in_table, in_data_table = set(), set()
+        parents = {child: parent for parent in sec.iter() for child in parent}
         for tb in sec.iter(HP + "tbl"):
             ids = {id(e) for e in tb.iter(HP + "p")}
             in_table |= ids
             if len(tb.findall(HP + "tr")) >= 2:
                 in_data_table |= ids
-            for tc in tb.iter(HP + "tc"):
-                face = fills.get(tc.get("borderFillIDRef"), "")
-                for e in tc.iter(HP + "p"):
-                    cell_fill[id(e)] = face
         for p in sec.iter(HP + "p"):
             segs = []
             for r in p.findall(HP + "run"):
@@ -160,7 +180,7 @@ def read_hwpx(path: str):
             first = chars.get(segs[0][0], {})
             nb = sum(len(t) for c, t in segs if chars.get(c, {}).get("bold"))
             # 칸 배경도 글자색도 흰색이면 화면에서 사라진다(글자 음영이 있으면 제외).
-            back = (cell_fill.get(id(p)) or "").upper()
+            back = paragraph_background(p, parents, fills)
             lit = back and back != PAPER
             hidden = sum(
                 len(t) for c, t in segs
@@ -401,7 +421,10 @@ def main() -> int:
         verdict, code = "PASS", 0
 
     print(json.dumps({"verdict": verdict, "findings": findings,
-                      "metrics": metrics, "unverifiable": []},
+                      "metrics": metrics, "unverifiable": [
+                          "한글 네이티브 줄바꿈·쪽 넘김·겹침·도형 편집은 이 XML 검사로 확인하지 않음",
+                          "반투명·그라데이션·그림 채움 및 겹친 개체의 실제 가시성은 네이티브 확인 필요",
+                      ]},
                      ensure_ascii=False, indent=2))
 
     if not a.json_only:
